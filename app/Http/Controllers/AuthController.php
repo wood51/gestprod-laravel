@@ -7,15 +7,38 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function showLoginForm() {
+    public function showLoginForm()
+    {
         return view('auth.login');
     }
 
-    public function login() {
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => ['required'],
+            'password' => ['required']
+        ]);
 
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            return match ($user->role) {
+                //'admin' => redirect()->intended('/admin'),
+                //'hse'   => redirect()->intended('/hse'),
+                default => redirect()->intended('/'),
+            };
+        }
+
+        return back()->withErrors([
+            'username' => 'Identifiants incorrects.',
+        ]);
     }
 
-    public function logout() {
-        
+    public function logout(Request $request)
+    {
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
     }
 }
