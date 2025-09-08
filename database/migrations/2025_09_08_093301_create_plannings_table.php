@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('plannings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained('articles');
-            $table->foreignId('type_sous_ensembles')->constrained('type_sous_ensembles');
+            $table->foreignId('type_sous_ensemble_id')->constrained('type_sous_ensembles');
             $table->unsignedInteger('numero')->nullable();
             $table->string('semaine',7);
             $table->string('engagement',7);
