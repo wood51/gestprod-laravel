@@ -18,4 +18,8 @@ class Planning extends Model
     public function typeSousEnsemble() {
         return $this->belongsTo(TypeSousEnsemble::class,'type_sous_ensemble_id');
     }
+
+    public function controleProduits() {
+        return $this->hasMany(ControleProduit::class,'planning_id');
+    }
 }

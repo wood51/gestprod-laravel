@@ -8,5 +8,7 @@ class Etat extends Model
 {
     protected $fillable = ['libelle','couleur','bg_color','fg_color'];
 
-    
+    public function controleProduits() {
+        return $this->hasMany(ControleProduit::class,'etat_id');
+    }
 }
