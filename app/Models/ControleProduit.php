@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ControleProduit extends Model
 {
-    protected $fillable=['hasDefault','commentaire'];
+    protected $fillable=['planning_id','etat_id','hasDefault','commentaire'];
 
     public function planning() {
         return $this->belongsTo(Planning::class,'planning_id');
