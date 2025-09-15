@@ -84,113 +84,98 @@
         <span id="pauseText">Pause</span>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const carousel = document.getElementById("carousel");
-            const slides = Array.from(carousel.querySelectorAll(".carousel-item"));
-            const bar = document.getElementById("progress-fill");
-            const indicator = document.getElementById("pauseIndicator");
-            const icon = document.getElementById("pauseIcon");
-            const text = document.getElementById("pauseText");
-            let current = 0,
-                paused = false,
-                timer,
-                hideTimeout;
+     <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const carousel = document.getElementById("carousel");
+        const slides = Array.from(carousel.querySelectorAll(".carousel-item"));
+        const bar = document.getElementById("progress-fill");
+        const indicator = document.getElementById("pauseIndicator");
+        const icon = document.getElementById("pauseIcon");
+        const text = document.getElementById("pauseText");
+        let current = 0,
+          paused = false,
+          timer,
+          hideTimeout;
 
-            // Affiche la slide d'index i
-            function showSlide(i) {
-                slides[i].scrollIntoView({
-                    behavior: "smooth",
-                    inline: "start"
-                });
-                current = i;
-            }
+        // Affiche la slide d'index i
+        function showSlide(i) {
+          slides[i].scrollIntoView({ behavior: "smooth", inline: "start" });
+          current = i;
+        }
 
-            // Passe à la slide suivante
-            function nextSlide() {
-                showSlide((current + 1) % slides.length);
-                resetProgress();
-            }
+        // Passe à la slide suivante
+        function nextSlide() {
+          showSlide((current + 1) % slides.length);
+          resetProgress();
+        }
 
-            // Réinitialise et relance l'animation de la barre
-            function resetProgress() {
-                bar.style.transition = "none";
-                bar.style.width = "0";
-                setTimeout(() => {
-                    bar.style.transition = "width 30s linear";
-                    bar.style.width = "100%";
-                }, 50);
-            }
+        // Réinitialise et relance l'animation de la barre
+        function resetProgress() {
+          bar.style.transition = "none";
+          bar.style.width = "0";
+          setTimeout(() => {
+            bar.style.transition = "width 30s linear";
+            bar.style.width = "100%";
+          }, 50);
+        }
 
-            // Démarre le défilement auto
-            function startTimer() {
-                timer = setInterval(nextSlide, 30000);
-                resetProgress();
-            }
+        // Démarre le défilement auto
+        function startTimer() {
+          timer = setInterval(nextSlide, 30000);
+          resetProgress();
+        }
 
-            // Arrête le défilement auto (garde la barre où elle est)
-            function stopTimer() {
-                clearInterval(timer);
-                bar.style.transition = "";
-            }
+        // Arrête le défilement auto (garde la barre où elle est)
+        function stopTimer() {
+          clearInterval(timer);
+          bar.style.transition = "";
+        }
 
-            // Affiche brièvement l'indicateur pause/play
-            function showIndicator() {
-                clearTimeout(hideTimeout);
-                indicator.classList.remove("invisible");
-                hideTimeout = setTimeout(() => {
-                    indicator.classList.add("invisible");
-                }, 2000);
-            }
+        // Affiche brièvement l'indicateur pause/play
+        function showIndicator() {
+          clearTimeout(hideTimeout);
+          indicator.classList.remove("invisible");
+          hideTimeout = setTimeout(() => {
+            indicator.classList.add("invisible");
+          }, 2000);
+        }
 
-            function updateTime() {
-                const now = new Date();
-                const options = {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                };
-                const formattedTime = now.toLocaleTimeString("fr-FR", options);
-                document.querySelector("#clock").textContent = formattedTime;
-            }
-
-            document.addEventListener("keydown", (e) => {
-                // Espace : change de slide sans toucher au mode pause
-                if (e.code === "Space") {
-                    e.preventDefault();
-                    if (paused) {
-                        showSlide((current + 1) % slides.length);
-                    } else {
-                        nextSlide();
-                    }
-                }
-
-
-                // P : toggle pause/play et affiche l'indicateur
-                if (e.code === "KeyP") {
-                    e.preventDefault();
-                    paused = !paused;
-                    if (paused) {
-                        stopTimer();
-                        icon.textContent = "⏸";
-                        text.textContent = "Pause";
-                    } else {
-                        startTimer();
-                        icon.textContent = "▶️";
-                        text.textContent = "Play";
-                    }
-                    showIndicator();
-                }
-            });
-        });
-
-        document.addEventListener("reload-page", function() {
-            location.reload();
-        });
-
-        // Initialisaton
+        // Initialisation
         showSlide(0);
         startTimer();
-    </script>
+
+        document.addEventListener("keydown", (e) => {
+          // Espace : change de slide sans toucher au mode pause
+          if (e.code === "Space") {
+            e.preventDefault();
+            if (paused) {
+              showSlide((current + 1) % slides.length);
+            } else {
+              nextSlide();
+            }
+          }
+          // P : toggle pause/play et affiche l'indicateur
+          if (e.code === "KeyP") {
+            e.preventDefault();
+            paused = !paused;
+            if (paused) {
+              stopTimer();
+              icon.textContent = "⏸";
+              text.textContent = "Pause";
+            } else {
+              startTimer();
+              icon.textContent = "▶️";
+              text.textContent = "Play";
+            }
+            showIndicator();
+          }
+        });
+      });
+
+      document.addEventListener("reload-page", function () {
+        location.reload();
+      });
+    </script> 
 </body>
 
 </html>
