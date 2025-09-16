@@ -4,6 +4,7 @@ namespace App\Services\Kpi;
 
 use Illuminate\Support\Facades\DB;
 
+use function Laravel\Prompts\clear;
 
 class EngagementTypeService
 {
@@ -116,9 +117,8 @@ class EngagementTypeService
     {
         // Règle simple : vert si >=100%, orange si 60-99%, rouge sinon.
         $ratio = $produit / max($objectif, 1);
-        if ($ratio >= 1.0) return '#65a30d ';
-        if ($ratio >= 0.60)
-            return '#f59e0b'; // orange
-        return '#dc2626';                    // rouge
+        if ($ratio >= 1.0) return '#65a30d '; // vert
+        if ($ratio >= 0.6) return '#f59e0b'; // orange
+        return '#dc2626'; // rouge
     }
 }
