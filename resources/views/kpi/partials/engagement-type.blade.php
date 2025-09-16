@@ -7,7 +7,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const week = @json($week);
-            const res = await fetch(`/json/${week}`); // ← ton contrôleur JSON
+            const res = await fetch(`/kpi/api/engagement-type/${week}`); // ← ton contrôleur JSON
             const cfg = await res.json(); // { title, series, annotations }
 
             const options = {

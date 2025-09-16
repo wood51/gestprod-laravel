@@ -9,8 +9,11 @@ use App\Services\Kpi\EngagementTypeService;
 class EngagementType extends Controller
 {
     
+    public function renderEngagementType(string $week) {
+        return view('kpi.partials.engagement-type', ['week' => $week]);
+    }
 
-    public function engagementType(string $week,EngagementTypeService $svc)
+    public function jsonEngagementType(string $week,EngagementTypeService $svc)
     {
         return response()->json($svc->build($week));
     }

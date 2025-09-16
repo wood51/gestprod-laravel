@@ -11,15 +11,12 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/json/{week}',[EngagementType::class,'engagementType']);
 
 // Pour debug 
 // TODO Remettre dans le controller
 
-Route::get('/kpi/type/{week}', function (string $week) {
-    return view('kpi.partials.engagement-type', ['week' => $week]);
-});
-
-Route::get('/kpi/public', function () {
+Route::get('/kpi/dashboard', function () {
     return view('kpi.dashboard');
 });
+Route::get('/kpi/api/engagement-type/{week}',[EngagementType::class,'jsonEngagementType']);
+Route::get('/kpi/type/{week}',[EngagementType::class,'renderEngagementType']);
