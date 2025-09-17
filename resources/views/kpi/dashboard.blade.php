@@ -64,16 +64,16 @@
         <div id="carousel" class="carousel w-full h-full overflow-hidden">
             <!-- Slide 1 -->
             <div id="slide1" class="carousel-item relative w-full h-full">
-                @include('kpi.partials.engagement-type', ['week' => '2025-35'])
+                @include('kpi.partials.engagement-type')
             </div>
-            {{-- <!-- Slide 2 -->
+            <!-- Slide 2 -->
             <div id="slide2" class="carousel-item relative w-full h-full">
-                <include href="/kpi-dashboard/partials/_chart_engagement.html" />
-            </div>
+                @include('kpi.partials.engagement')  
+            </div> 
             <!-- Slide 3 -->
             <div id="slide3" class="carousel-item relative w-full h-full">
-                <include href="/kpi-dashboard/partials/_chart.html" />
-            </div> --}}
+                @include('kpi.partials.performance-qualite');
+            </div> 
         </div>
     </main>
 
