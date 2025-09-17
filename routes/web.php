@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Kpi\EngagementType;
 use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
+use App\Http\Controllers\Kpi\Performance;
 
 Route::get('/', [HomeController::class, 'showHome'])->middleware('auth');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -23,3 +24,6 @@ Route::get('/kpi/type/{week}',[EngagementType::class,'renderEngagementType']);
 
 Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);
 Route::get('/kpi/engagement/{week}',[Engagement::class,'renderEngagement']);
+
+Route::get('/kpi/api/performance/{week}',[Performance::class,'jsonPerformance']);
+Route::get('/kpi/performance/{week}',[Performance::class,'renderPerformance']);
