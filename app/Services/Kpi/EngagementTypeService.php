@@ -33,12 +33,12 @@ class EngagementTypeService
             $prod = (int) $r->produit;
             $obj = (int) $r->objectif;
 
-            
+
 
             $data[] = [
                 'x' => $r->type_ensemble,
                 'y' => $prod,
-                'fillColor' => $this->fillColor($prod, $obj),
+                // 'fillColor' => $this->fillColor($prod, $obj),
                 'goals' => [
                     [
                         'name' => 'Objectif',
@@ -72,7 +72,7 @@ class EngagementTypeService
         $data[] = [
             'x' => 'Total',
             'y' => $totProd,
-            'fillColor' => $this->fillColor($totProd, $totObj, true),
+            //'fillColor' => $this->fillColor($totProd, $totObj, true),
             'goals' => [
                 [
                     'name' => 'Objectif',
@@ -113,6 +113,7 @@ class EngagementTypeService
         ];
     }
 
+    // TODO Vérif bug 
     private function fillColor(int $produit, int $objectif, bool $isTotal = false): string
     {
         // Règle simple : vert si >=100%, orange si 60-99%, rouge sinon.
