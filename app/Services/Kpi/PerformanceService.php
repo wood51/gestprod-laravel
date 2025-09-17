@@ -11,22 +11,40 @@ class PerformanceService
 {
     public function build(string $week)
     {
-        return $this->getNbOperateurSemaine();
+        return $this->getNbOperateurSemaine($week);
     }
 
     private function getNbOperateurSemaine(?string $week = null)
     {
+
         if ($week) {
-            [$semaine, $annee] = explode('-', $week);
+            [$annee, $semaine] = explode('-', $week);
         } else {
             $semaine = date('W');
             $annee   = date('o');
         }
 
         // Déterminer les dates de début et fin de la semaine
-        $start = Carbon::now()->startOfWeek(Carbon::MONDAY);
-        $end   = Carbon::now()->endOfWeek(Carbon::SUNDAY);
+        $isoWeekStart = new Carbon()
+            ->setISODate($annee, $semaine)
+            ->startOfWeek(Carbon::MONDAY)
+            ->startOfDay();
 
-        return [$start,$end];
+        $isoWeekEnd   = new Carbon()
+            ->setISODate($annee, $semaine)
+            ->endOfWeek(Carbon::SUNDAY)
+            ->endOfDay();
+
+        $rows = Presence::whereBetween('date_jour', [$isoWeekStart, $isoWeekEnd])->get();
+
+        $totalHeuresNormales = 0;
+        $totalHeuresSupp = 0;
+
+        foreach ($rows as $presence) {
+            $totalHeuresNormales += $presence->nb_operateurs * $presence->nb_heures_normales;
+            $totalHeuresSupp += $presence->nb_operateurs * $presence->nb_heures_supp;
+        }
+
+        return $totalHeuresNormales;
     }
 }
