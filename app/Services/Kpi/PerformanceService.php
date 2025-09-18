@@ -42,6 +42,7 @@ class PerformanceService
 
         foreach ($rows as $presence) {
             $totalHeuresNormales += $presence->nb_operateurs * $presence->nb_heures_normales;
+            echo $totalHeuresNormales."<br>";
             $totalHeuresSupp += $presence->nb_operateurs * $presence->nb_heures_supp;
         }
 

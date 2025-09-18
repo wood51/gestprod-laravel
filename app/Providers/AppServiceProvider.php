@@ -19,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Cmixin\BusinessDay::enable(\Carbon\Carbon::class, 'fr_FR');
     }
 }

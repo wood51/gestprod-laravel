@@ -8,6 +8,7 @@ use App\Http\Controllers\Kpi\EngagementType;
 use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
 use App\Http\Controllers\Kpi\Performance;
+use App\Http\Controllers\TempsProduction;
 
 Route::get('/', [HomeController::class, 'showHome'])->middleware('auth');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -16,7 +17,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 // Pour debug 
-// TODO Remettre dans le controller
+Route::get('tp',[TempsProduction::class,'tempsProduction']);
 
 Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] );
 Route::get('/kpi/api/engagement-type/{week}',[EngagementType::class,'jsonEngagementType']);
