@@ -12,29 +12,74 @@ class TempsProduction extends Controller
     public function tempsProduction()
     {
 
-        $vendredi = 1;
+        $vendredi_travail =1;
 
-        $debut = Carbon::createFromFormat('d/m/Y H:i', '04/09/2025 08:30');
-        $fin = Carbon::createFromFormat('d/m/Y H:i', '10/09/2025 13:48');
-        echo $debut . "<br>";
-        echo $fin . "<br>";
+        // $start = Carbon::createFromFormat('d/m/Y H:i', '04/09/2025 08:30');
+        // $end = Carbon::createFromFormat('d/m/Y H:i', '10/09/2025 13:48');
 
-        // Jours trvaillé 0-3 , 4 en HS 
-        // $period = CarbonPeriod::create($debut->next(Carbon::FRIDAY), '1 week', $fin);
-        // $vendredi_period = iterator_count($period);
+        $start = Carbon::createFromFormat('d/m/Y H:i', '04/09/2025 08:30');
+        $end = Carbon::createFromFormat('d/m/Y H:i', '10/09/2025 13:48');
 
-        $period=CarbonPeriod::create($debut, '1 minute', $fin);
-        foreach($period as $date) {
-            if ($date->day===5 && $vendredi === 0) {
+        $workingSlots = [
+            ['7:00', '09:30'],
+            ['09:45', '12:00'],
+            ['12:30', '15:00'],
+            ['15:15', '16:45'],
+        ];
+
+        $workingSlotsVend = [
+            ['7:00', '09:30'],
+            ['09:50', '12:00'],
+        ];
+
+        $totalMinutes = 0;
+
+        $period = CarbonPeriod::create($start->copy()->startOfDay(), '1 day', $end);
+
+        foreach ($period as $day) {
+            if ($day->isFriday() && $vendredi_travail === 0) {
                 continue;
-            } 
-            $vendredi--;
-            echo $date->format('Y-m-d') .'<br>';
+            }
+
+            if ($day->isSaturday() || $day->isSunday()) {
+                continue;
+            }
+
+            if (!$day->isFriday()) {
+                foreach ($workingSlots as [$slotStart, $slotEnd]) {
+
+                    $slotStartTime = $day->copy()->setTimeFromTimeString($slotStart);
+                    $slotEndTime   = $day->copy()->setTimeFromTimeString($slotEnd);
+
+                    $rangeStart = $start->greaterThan($slotStartTime) ? $start : $slotStartTime;
+                    $rangeEnd   = $end->lessThan($slotEndTime) ? $end : $slotEndTime;
+
+                    if ($rangeEnd->greaterThan($rangeStart)) {
+                        $totalMinutes += $rangeStart->diffInMinutes($rangeEnd);
+                    }
+                }
+            } else {
+                foreach ($workingSlotsVend as [$slotStart, $slotEnd]) {
+
+                    $slotStartTime = $day->copy()->setTimeFromTimeString($slotStart);
+                    $slotEndTime   = $day->copy()->setTimeFromTimeString($slotEnd);
+
+                    $rangeStart = $start->greaterThan($slotStartTime) ? $start : $slotStartTime;
+                    $rangeEnd   = $end->lessThan($slotEndTime) ? $end : $slotEndTime;
+
+                    if ($rangeEnd->greaterThan($rangeStart)) {
+                        $totalMinutes += $rangeStart->diffInMinutes($rangeEnd);
+                    }
+                }
+
+                $vendredi_travail--;
+            }
         }
+        $hours = floor($totalMinutes / 60);
+        $minutes = $totalMinutes % 60;
 
+        $result = sprintf('%02d:%02d', $hours, $minutes);
 
-        return; //response()->json([
-
-        //]);
+        echo $result;
     }
 }
