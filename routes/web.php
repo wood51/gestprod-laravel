@@ -20,10 +20,7 @@ Route::get('tp',[TempsProduction::class,'tempsProduction']);
 
 Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] );
 Route::get('/kpi/api/engagement-type/{week}',[Engagement::class,'jsonEngagementType']);
-Route::get('/kpi/type/{week}',[Engagement::class,'renderEngagementType']);
-
 Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);
-Route::get('/kpi/engagement/{week}',[Engagement::class,'renderEngagement']);
 
-Route::get('/kpi/api/performance/{week}',[Performance::class,'jsonPerformance']);
-Route::get('/kpi/performance/{week}',[Performance::class,'renderPerformance']);
+Route::get('/kpi/api/respect-engagement/{week}',[Engagement::class,'jsonRespectEngagement']);
+Route::get('/kpi/respect-engagement/{week}',[Engagement::class,'renderRespectEngagement']);

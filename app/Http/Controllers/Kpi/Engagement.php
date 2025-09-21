@@ -17,7 +17,7 @@ class Engagement extends Controller
 
     public function jsonEngagement(string $week, EngagementService $svc)
     {
-        return response()->json($svc->buildEngagement($week));
+        return response()->json($svc->buildByRef($week));
     }
 
     public function renderEngagementType(string $week) {
@@ -26,6 +26,14 @@ class Engagement extends Controller
 
     public function jsonEngagementType(string $week,EngagementService $svc)
     {
-        return response()->json($svc->buildEngagementType($week));
+        return response()->json($svc->buildByType($week));
+    }
+
+    public function renderRespectEngagement(string $week) {
+        return view('kpi.partials.respect-engagement', ['week' => $week]);
+    }
+
+    public function jsonRespectEngagement(string $week,EngagementService $svc) {
+    return response()->json($svc->buildRespectEngagement($week));
     }
 }

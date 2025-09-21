@@ -7,10 +7,10 @@ use App\Models\VueEngagementSynthese;
 
 class EngagementService
 {
-   public function buildEngagement(string $week)
-   {
-      $results= VueEngagementSynthese::query()->where('semaine_engagee', '=', $week)->get();
-      $total_engagee = 0;
+    public function buildByRef(string $week)
+    {
+        $results = VueEngagementSynthese::query()->where('semaine_engagee', '=', $week)->get();
+        $total_engagee = 0;
         $total_ponderee = 0;
         $annotations = [];
         $data = [
@@ -68,7 +68,7 @@ class EngagementService
         $options = [
             "series" => $data,
             "title" => [
-                "text" => $results 
+                "text" => $results
                     ? "Engagement semaine $week - $total_engagee produits"
                     : "Aucun engagement trouvé pour la semaine $week"
             ],
@@ -81,11 +81,10 @@ class EngagementService
             $options["barWidth"] = intVal(100 / count($results)) . "%";
         }
 
-        return $options ;
-
+        return $options;
     }
 
-    public function buildEngagementType(string $week): array
+    public function buildByType(string $week): array
     {
         // Agréger par type_ensemble (une barre par type)
         $rows = DB::table('vue_engagement_syntheses')
@@ -190,6 +189,11 @@ class EngagementService
         ];
     }
 
+    public function buildRespectEngagement(string $week)
+    {
+        return 'Hi!';
+    }
+
     // TODO Vérif bug 
     private function fillColor(int $produit, int $objectif, bool $isTotal = false): string
     {
@@ -199,5 +203,4 @@ class EngagementService
         if ($ratio >= 0.6) return '#f59e0b'; // orange
         return '#dc2626'; // rouge
     }
-   }
-
+}
