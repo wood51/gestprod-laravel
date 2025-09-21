@@ -17,6 +17,15 @@ class Engagement extends Controller
 
     public function jsonEngagement(string $week, EngagementService $svc)
     {
-        return response()->json($svc->build($week));
+        return response()->json($svc->buildEngagement($week));
+    }
+
+    public function renderEngagementType(string $week) {
+        return view('kpi.partials.engagement-type', ['week' => $week]);
+    }
+
+    public function jsonEngagementType(string $week,EngagementService $svc)
+    {
+        return response()->json($svc->buildEngagementType($week));
     }
 }

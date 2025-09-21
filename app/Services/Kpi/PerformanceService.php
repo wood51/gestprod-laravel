@@ -42,9 +42,17 @@ class PerformanceService
 
         foreach ($rows as $presence) {
             $totalHeuresNormales += $presence->nb_operateurs * $presence->nb_heures_normales;
-            echo $totalHeuresNormales."<br>";
             $totalHeuresSupp += $presence->nb_operateurs * $presence->nb_heures_supp;
         }
+
+        // Calcul des heures théoriques en excluant les fermetures
+        // $heures_theoriques = AtelierFermetures::getHeuresTheoriquesSemaine($semaine, $annee);
+
+        // $totalOperateursEquivalents = $heures_theoriques > 0
+        //     ? ($totalHeuresNormales + $totalHeuresSupp) / $heures_theoriques
+        //     : 0;
+
+
 
         return $totalHeuresNormales;
     }
