@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FermetureAtelier extends Model
 {
-    //
+    protected $fillable= ['debut','fin','commentaire'];
 }

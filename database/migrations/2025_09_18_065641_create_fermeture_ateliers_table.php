@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('fermeture_ateliers', function (Blueprint $table) {
             $table->id();
-            
-            $table->timestamps();
+            $table->date('debut');
+            $table->date('fin');
+            $table->string('commentaire')->nullable();   
         });
     }
 
