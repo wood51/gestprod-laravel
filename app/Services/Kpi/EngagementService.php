@@ -191,7 +191,20 @@ class EngagementService
 
     public function buildRespectEngagement(string $week)
     {
-        return 'Hi!';
+        // (somme des machine prete / somme des machines engagés) * 100
+        $agg = VueEngagementSynthese::where('semaine_engagee', $week)
+        ->selectRaw('
+            SUM(produit)   AS produits,
+            SUM(engagement) AS objectifs,
+            IFNULL(ROUND(100.0 * SUM(produit)/NULLIF(SUM(engagement),0),2),0) AS re
+        ')
+        ->first();
+
+    return [
+        'respectEngagement' => (float) $agg->re,
+        'produits'          => (int)   $agg->produits,
+        'objectifs'         => (int)   $agg->objectifs,
+    ];
     }
 
     // TODO Vérif bug 
