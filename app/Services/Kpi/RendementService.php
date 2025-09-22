@@ -4,17 +4,27 @@ namespace App\Services\Kpi;
 
 use App\Models\Presence;
 use App\Models\VueEngagementSynthese;
+use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
 
-class PerformanceService
+class RendementService
 {
     public function build(string $week)
     {
-        return $this->getNbOperateurSemaine($week);
+        $capaciteHomme = $this->capaciteHomme($week);
+        $AlternateurEquivament = $this->getAlternateurEquivalent($capaciteHomme);
+        $realise = $this->getRealise($week);
+
+        return [
+            'capacitée homme (en h)' => $capaciteHomme,
+            'alternateur equivalents' => $AlternateurEquivament,
+            'realise' => $realise,
+            'rendement' => ($realise / $AlternateurEquivament) * 100
+        ];
     }
 
-    private function getNbOperateurSemaine(?string $week = null)
+    private function capaciteHomme(?string $week = null)
     {
 
         if ($week) {
@@ -45,15 +55,18 @@ class PerformanceService
             $totalHeuresSupp += $presence->nb_operateurs * $presence->nb_heures_supp;
         }
 
-        // Calcul des heures théoriques en excluant les fermetures
-        // $heures_theoriques = AtelierFermetures::getHeuresTheoriquesSemaine($semaine, $annee);
+        return $totalHeuresNormales + $totalHeuresSupp;
+    }
 
-        // $totalOperateursEquivalents = $heures_theoriques > 0
-        //     ? ($totalHeuresNormales + $totalHeuresSupp) / $heures_theoriques
-        //     : 0;
+    private function getAlternateurEquivalent(float $capaciteHomme)
+    {
+        return $capaciteHomme / 35;
+    }
 
-
-
-        return $totalHeuresNormales;
+    private function getRealise(string $week)
+    {
+        $realise = VueEngagementSynthese::where('semaine_engagee', '=', $week)
+            ->sum(DB::raw('coefficient * produit'));
+        return $realise;
     }
 }
