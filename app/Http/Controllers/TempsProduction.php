@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 
 class TempsProduction extends Controller //TODO Jour fériés et fermetures
 {
-    public function tempsProduction()
+    public function tempsProduction(string $startDate,string $endDate,?int $vendredi_travail=0)
     {
 
-        $vendredi_travail = 0;
+        //$vendredi_travail = 1;
 
-        $start = Carbon::createFromFormat('d/m/Y H:i', '04/09/2025 08:30');
-        $end = Carbon::createFromFormat('d/m/Y H:i', '10/09/2025 13:48');
+        $start = Carbon::createFromFormat('d/m/Y H:i', $startDate);
+        $end = Carbon::createFromFormat('d/m/Y H:i', $endDate);
 
         $workingSlotsWeek = [
             ['7:00', '09:30'],
