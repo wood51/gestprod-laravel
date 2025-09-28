@@ -38,7 +38,7 @@
     const chartRespectEngagement = new ApexCharts(el, optionsRespectEngagement);
     chartRespectEngagement.render();
     const week = @json($week);
-    fetch(`/kpi/api/respect-engagement/${week} `) 
+    fetch(`/kpi/api/respect-engagement/${week}`) 
       .then((response) => response.json())
       .then((data) => {
         const value = Math.min(Math.ceil(Number(data.respectEngagement)), 100);

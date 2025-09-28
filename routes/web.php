@@ -26,4 +26,5 @@ Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);
 Route::get('/kpi/api/respect-engagement/{week}',[Engagement::class,'jsonRespectEngagement']);
 Route::get('/kpi/respect-engagement/{week}',[Engagement::class,'renderRespectEngagement']);
 
-Route::get('/kpi/api/rendement/{week}',[Rendement::class,'jsonRendementMois']);
+Route::get('/kpi/api/rendement/{week}/{nb_week}',[Rendement::class,'jsonRendementMois']);
+Route::get('/kpi/rendement-mois/{week}/{nb_week}',[Rendement::class,'renderRendementMois']);

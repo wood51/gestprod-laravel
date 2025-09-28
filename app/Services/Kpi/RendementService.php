@@ -7,24 +7,51 @@ use App\Models\VueEngagementSynthese;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterface;
+use Carbon\CarbonPeriod;
+use Carbon\CarbonInterval;
 
 class RendementService
 {
-    public function build(string $week)
+    public function build(?string $week = null, ?int $weekNumber = 4)
     {
-        $capaciteHomme = $this->capaciteHomme($week);
-        $AlternateurEquivament = $this->getAlternateurEquivalent($capaciteHomme);
-        $realise = $this->getRealise($week);
+        if ($week) {
+            [$annee, $semaine] = explode('-', $week);
+        } else {
+            $semaine = date('W');
+            $annee   = date('o');
+        }
 
-        return [
-            'capacitée homme (en h)' => $capaciteHomme,
-            'alternateur equivalents' => $AlternateurEquivament,
-            'realise' => $realise,
-            'rendement' => ($realise / $AlternateurEquivament) * 100
+        $endWeek = new Carbon()->setISODate($annee, $semaine)
+            ->startOfWeek(Carbon::MONDAY)
+            ->startOfDay();
+
+        $startWeek = $endWeek->copy()->subWeeks($weekNumber - 1);
+
+        $period = new CarbonPeriod($startWeek, "1 week", $endWeek);
+
+        $serie = [
+            "name" => "Performance",
+            "color" => "#4338ca",
+            "data" => []
         ];
+
+
+        foreach ($period as $date) {
+            $w =  $date->format("o-W");
+            $capaciteHomme = $this->getRessourceHomme($w);
+            $capaciteProduit = $this->getCapaciteProduit($capaciteHomme);
+            $produitRealise = $this->getProduitRealise($w);
+
+            $serie['data'][] = [
+                $w => $capaciteProduit ? ($produitRealise / $capaciteProduit) * 100 : 0
+            ];
+        }
+
+        return $serie;
     }
 
-    private function capaciteHomme(?string $week = null)
+    private function getRessourceHomme(?string $week = null)
     {
 
         if ($week) {
@@ -58,12 +85,14 @@ class RendementService
         return $totalHeuresNormales + $totalHeuresSupp;
     }
 
-    private function getAlternateurEquivalent(float $capaciteHomme)
+    private function getCapaciteProduit(float $capaciteHomme)
     {
+        // INFO : division pas 35 car coeff basés sur 35H 
+        // TODO ?: Passer par des heure réelle de fab plutôt que des coeff
         return $capaciteHomme / 35;
     }
 
-    private function getRealise(string $week)
+    private function getProduitRealise(string $week)
     {
         $realise = VueEngagementSynthese::where('semaine_engagee', '=', $week)
             ->sum(DB::raw('coefficient * produit'));
