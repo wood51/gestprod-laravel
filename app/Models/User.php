@@ -22,4 +22,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function defautProduits()
+    {
+        return $this->hasMany(DefautProduit::class);
+    }
 }

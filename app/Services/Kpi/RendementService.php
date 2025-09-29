@@ -34,7 +34,7 @@ class RendementService
             "name" => "Performance",
             "color" => "#4338ca",
             "data" => []
-        ];
+        ]; 
 
 
         foreach ($period as $date) {
@@ -44,7 +44,8 @@ class RendementService
             $produitRealise = $this->getProduitRealise($w);
 
             $serie['data'][] = [
-                $w => $capaciteProduit ? ($produitRealise / $capaciteProduit) * 100 : 0
+                "x" => $w,
+                "y" => $capaciteProduit ? ($produitRealise / $capaciteProduit) : 0
             ];
         }
 

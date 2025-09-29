@@ -9,7 +9,7 @@ class Dashboard extends Controller
 {
     public function showDashboard()
     {
-        $week = "2025-29";
+        $week = "2025-35";
         $nb_week = "4";
         return view('kpi.dashboard', ['week' => $week,'nb_week'=>$nb_week]);
     }

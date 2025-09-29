@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
+use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
 use App\Http\Controllers\TempsProduction;
 
@@ -26,5 +27,8 @@ Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);
 Route::get('/kpi/api/respect-engagement/{week}',[Engagement::class,'jsonRespectEngagement']);
 Route::get('/kpi/respect-engagement/{week}',[Engagement::class,'renderRespectEngagement']);
 
-Route::get('/kpi/api/rendement/{week}/{nb_week}',[Rendement::class,'jsonRendementMois']);
+Route::get('/kpi/api/rendement-mois/{week}/{nb_week}',[Rendement::class,'jsonRendementMois']);
 Route::get('/kpi/rendement-mois/{week}/{nb_week}',[Rendement::class,'renderRendementMois']);
+
+Route::get('kpi/api/qualite/{week}',[Qualite::class,'jsonQualite']);
+Route::get('kpi/qualite/{week}',[Qualite::class,'renderQualite']);

@@ -9,7 +9,7 @@
         height: "100%",
         offsetY: 0,
       },
-      //series: [10], // Pourcentage de performance
+      series: [0], 
       plotOptions: {
         radialBar: {
           track: {
