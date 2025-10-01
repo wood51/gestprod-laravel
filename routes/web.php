@@ -16,8 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-// Pour debug 
-//Route::get('tp',[TempsProduction::class,'tempsProduction']);
+
 
 Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] );
 

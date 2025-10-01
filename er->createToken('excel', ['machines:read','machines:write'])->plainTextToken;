@@ -1,0 +1,24 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#6462
+    [34musername[39m: "[32mexcel[39m",
+    [34mnom[39m: "[32mExcel[39m",
+    [34mprenom[39m: "[32mBot[39m",
+    #[33mpassword[39m: "[32m$2y$12$LdBxuYuvRPpaU9netQp4DuXpGbjYzNjf11MdWlmAkFmctvxiWCzBu[39m",
+    [34mrole[39m: "[32muser[39m",
+    [34msite[39m: "[32m1AB[39m",
+    [34mupdated_at[39m: "[32m2025-10-01 06:49:12[39m",
+    [34mcreated_at[39m: "[32m2025-10-01 06:49:12[39m",
+    [34mid[39m: [35m2[39m,
+  }
+
+[90m= [39m[34;4mApp\Models\User[39;24m {#6460
+    [34musername[39m: "[32mexcel[39m",
+    [34mnom[39m: "[32mExcel[39m",
+    [34mprenom[39m: "[32mBot[39m",
+    #[33mpassword[39m: "[32m$2y$12$dK16MwflDIA2JDp4xPEaA.bF3i46FVdtAI4mnCduLwZhkIRYKuQae[39m",
+    [34mrole[39m: "[32muser[39m",
+    [34msite[39m: "[32m1AB[39m",
+    [34mupdated_at[39m: "[32m2025-10-01 06:53:01[39m",
+    [34mcreated_at[39m: "[32m2025-10-01 06:53:01[39m",
+    [34mid[39m: [35m4[39m,
+  }
+
