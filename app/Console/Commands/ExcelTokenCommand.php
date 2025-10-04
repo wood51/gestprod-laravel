@@ -1,5 +1,5 @@
 <?php
-
+// 271681
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -42,7 +42,6 @@ class ExcelTokenCommand extends Command
             $user = new User();
             // champs minimaux
             if (Schema::hasColumn('users', 'username')) $user->username = $username;
-            if (Schema::hasColumn('users', 'email'))    $user->email    = $username.'@local';
             if (Schema::hasColumn('users', 'nom'))      $user->nom      = 'Excel';
             if (Schema::hasColumn('users', 'prenom'))   $user->prenom   = 'Bot';
             if (Schema::hasColumn('users', 'role'))     $user->role     = 'user';

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('type_sous_ensemble_id')->constrained('type_sous_ensembles');
             $table->foreignId('catalogue_defaut_id')->constrained('catalogue_defauts');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('commentaire');
+            $table->string('commentaire')->nullable();
             $table->dateTime('date');
             $table->timestamps();
         });
