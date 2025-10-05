@@ -36,14 +36,15 @@
     const el = document.querySelector("#qualite-chart");
     const qualiteChart = new ApexCharts(el, optionsQualite);
     qualiteChart.render();
-    // fetch(`/defauts/${week}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     const value = Math.min(Math.ceil(Number(data.iq)), 100);
-    //     qualiteChart.updateSeries([value]);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Erreur lors du chargement des données :", error);
-    //   });
+    const  week = @json($week);
+    fetch(`/kpi/api/qualite/${week}`) //
+      .then((response) => response.json())
+      .then((data) => {
+        const value = Math.min(Math.ceil(Number(data.iq)), 100);
+        qualiteChart.updateSeries([value]);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement des données :", error);
+      });
   });
 </script>

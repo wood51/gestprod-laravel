@@ -22,7 +22,7 @@ class RendementService
             $annee   = date('o');
         }
 
-        $endWeek = new Carbon()->setISODate($annee, $semaine)
+        $endWeek = Carbon::now()->setISODate($annee, $semaine)
             ->startOfWeek(Carbon::MONDAY)
             ->startOfDay();
 
@@ -63,12 +63,12 @@ class RendementService
         }
 
         // Déterminer les dates de début et fin de la semaine
-        $isoWeekStart = new Carbon()
+        $isoWeekStart = Carbon::now()
             ->setISODate($annee, $semaine)
             ->startOfWeek(Carbon::MONDAY)
             ->startOfDay();
 
-        $isoWeekEnd   = new Carbon()
+        $isoWeekEnd   = Carbon::now()
             ->setISODate($annee, $semaine)
             ->endOfWeek(Carbon::SUNDAY)
             ->endOfDay();
