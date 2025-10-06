@@ -25,19 +25,25 @@
             <!-- Clock -->
             <div class="flex items-center gap-2 text-2xl text-white font-semibold mr-4">
                 <span id="clock" class=" ">12:00</span>
-                <!-- <i class="far fa-calendar-days"></i> -->
-                <!-- change week-dd and --week-dd-anchor names. Use unique names for each dropdown -->
-                {{-- <button class="btn btn-ghost" popovertarget="week-dd" style="anchor-name: --week-dd-anchor">
+                {{-- <i class="far fa-calendar-days"></i>  --}}
+                {{-- change week-dd and --week-dd-anchor names. Use unique names for each dropdown --}}
+                <button class="btn btn-ghost" popovertarget="week-dd" style="anchor-name: --week-dd-anchor">
                     <i class="far fa-calendar-days text-2xl cursor-pointer"></i>
                 </button>
                 <ul class="dropdown dropdown-bottom dropdown-end menu w-52 rounded-box bg-base-100" popover
                     id="week-dd" style="position-anchor: --week-dd-anchor">
                     <li>
-                        <input type="week" value="{{ @week_picker }}" max="{{ @max_week_picker }}" min="2024-W45"
-                            class="input text-black bg-base-100" name="semaine" hx-trigger="change"
-                            hx-post="/public/dashboard/set-date" hx-include="this" />
+                      <form action="test" method="post">
+                        <input type="week" value="" max="" min="2024-W45"
+                            class="input text-black bg-base-100" name="semaine"
+                            onchange="this.form.submit()"
+                            {{-- hx-trigger="change"
+                            hx-post="/public/dashboard/set-date" 
+                            hx-include="this"  --}}
+                            />
+                      </form>
                     </li>
-                </ul> --}}
+                </ul>
             </div>
         </div>
         <!-- Clock Script -->
