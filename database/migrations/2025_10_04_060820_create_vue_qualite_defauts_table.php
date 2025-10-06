@@ -13,6 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         DB::statement("
+        CREATE OR REPLACE
+        ALGORITHM = UNDEFINED VIEW `gestprod`.`vue_qualite_defauts` AS
         select
 	        `cp`.`id` AS `controle_id`,
 	        `cp`.`created_at` AS `date_controle`,
