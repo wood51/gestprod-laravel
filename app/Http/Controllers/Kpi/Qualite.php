@@ -20,7 +20,7 @@ class Qualite extends Controller
         return view('kpi.partials.qualite-mois');
     }
 
-    public function jsonQualiteMois(string $week, QualiteService $svc)
+    public function jsonQualiteMois(string $week,?int $weekNumber=5, QualiteService $svc)
     {
         return response()->json($svc->buildQualiteMois($week));
     }

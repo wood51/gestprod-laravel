@@ -65,13 +65,15 @@
     const el = document.querySelector("#month-qualite-chart");
     const monthQualiteChart = new ApexCharts(el, optionsMonthQualite);
     monthQualiteChart.render();
-    // fetch(`/defauts/historique/${week}/${nb_week}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     monthQualiteChart.updateSeries(data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Erreur lors du chargement des données :", error);
-    //   });
+    const week = @json($week);
+    const nb_week = @json($nb_week);
+    fetch(`/kpi/api/qualite-mois/${week}/${nb_week}`)
+      .then((response) => response.json())
+      .then((data) => {
+        monthQualiteChart.updateSeries(data);
+      })
+      .catch((error) => {
+        console.error("Erreur lors du chargement des données :", error);
+      });
   });
 </script>

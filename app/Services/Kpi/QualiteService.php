@@ -43,11 +43,44 @@ class QualiteService
 
         $period = CarbonPeriod::create($startWeek, "1 week", $endWeek);
 
+        $series = [
+            [
+                "name" => "Défauts Majeurs",
+                "color" => "#Ff0000",
+                "data" => []
+            ],
+            [
+                "name" => "Défauts Mineurs",
+                "color" => "#FBBF24",
+                "data" => []
+            ],
+            [
+                "name" => "Sans défauts",
+                "color" => "#34D399",
+                "data" => []
+            ],
+        ];
+
         foreach ($period as $date) {
             $w = $date->format('o-W');
-            $iq = $this->calculIQ($w);
+            $results = $this->calculIQ($w);
+
+             $series[0]["data"][] = [
+                    "x" => $w,
+                    "y" => $results["majeurs"]
+                ];
+
+                $series[1]["data"][] = [
+                    "x" => "Sem. $w",
+                    "y" => $results["mineurs"]
+                ];
+
+                $series[2]["data"][] = [
+                    "x" => "Sem. $w",
+                    "y" => $results["no_defaut"]
+                ];
         }
-        return [];
+        return $series;
     }
 
     /**

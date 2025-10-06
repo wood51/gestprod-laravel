@@ -31,3 +31,6 @@ Route::get('/kpi/rendement-mois/{week}/{nb_week}',[Rendement::class,'renderRende
 
 Route::get('kpi/api/qualite/{week}',[Qualite::class,'jsonQualite']);
 Route::get('kpi/qualite/{week}',[Qualite::class,'renderQualite']);
+
+Route::get('kpi/api/qualite-mois/{week}/{nb_week}',[Qualite::class,'jsonQualiteMois']);
+Route::get('kpi/qualite-mois/{week}/{nb_week}',[Qualite::class,'renderQualiteMois']);
