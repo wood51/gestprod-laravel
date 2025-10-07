@@ -18,7 +18,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
-Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] );
+Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] )->name('dashboard');
+Route::post('/kpi/api/set-week', [Dashboard::class,'setDashboardWeek']);
 
 Route::get('/kpi/api/engagement-type/{week}',[Engagement::class,'jsonEngagementType']);
 Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);

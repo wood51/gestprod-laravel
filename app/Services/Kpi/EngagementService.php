@@ -5,6 +5,9 @@ namespace App\Services\Kpi;
 use Illuminate\Support\Facades\DB;
 use App\Models\VueEngagementSynthese;
 
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
+
 class EngagementService
 {
     public function buildByRef(string $week)
@@ -19,6 +22,7 @@ class EngagementService
                 'data' => []
             ],
         ];
+
         if ($results) {
             foreach ($results as $result) {
                 $total_engagee += $result->engagement;
@@ -63,6 +67,8 @@ class EngagementService
                     ];
                 }
             }
+        } else {
+            return [];
         }
 
         $options = [
