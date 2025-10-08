@@ -13,7 +13,7 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        $rows = VuePlanning::orderBy('semaine','desc')->get();
+        $rows = VuePlanning::orderBy('PA','asc')->orderBy('semaine_engagement','desc')->get();
         return view('planning.index',['rows'=>$rows]);
     }
 

@@ -5,13 +5,19 @@
             <table class="table table-sm">
                 <!-- head -->
                 <thead>
-                    <tr>
-                        <th></th>
+                    <tr class="sticky top-0 z-10 bg-blue-200">
+                        <th>
+                            <label for="check_all">
+                                    <input type="checkbox" id="check_all"/>
+                                </label>
+                        </th>
                         <th>Référence</th>
                         <th>Type</th>
                         <th>Numero</th>
                         <th>Semaine</th>
                         <th>Engagement</th>
+                        <th>PA</th>
+                        <th>Poste</th>
                         <th>Status</th>
                         <th>Réalisée</th>
                         <th>Action</th>
@@ -19,8 +25,13 @@
                 </thead>
                 <tbody>
                     @foreach ($rows as $index => $row)
-                        <tr class="hover:bg-base-300" data-planning="{{ $row->id }}">
-                            <th>{{ $index + 1 }}</th>
+                        <tr class="hover:bg-base-300" id="planning_{{ $row->id }}">
+                            {{-- <th>{{ $index + 1 }} </th> --}}
+                            <th>
+                                <label for="check_{{ $row->id }}">
+                                    <input type="checkbox" id="check_{{ $row->id }}"/>
+                                </label>
+                            </th>
                             <td>
                                 <div class="flex items-center justify-start gap-2 h-full">
                                     <span style="background-color:  {{ $row->reference_couleur }} "
@@ -32,6 +43,8 @@
                             <td> {{ $row->numero }} </td>
                             <td> {{ $row->semaine }} </td>
                             <td> {{ $row->semaine_engagement }} </td>
+                            <td> {{ $row->PA }}</td>
+                            <td> {{ $row->Poste }}</td>
                             <td>
                                 @switch($row->status)
                                     @case('Fait')
@@ -45,7 +58,7 @@
                                     @case('En cours')
                                         <div class="badge badge-outline text-warning text-xs">{{ $row->status }}</div>
                                     @break
-                                    
+
                                     @case('Engagé')
                                         <div class="badge badge-outline text-info text-xs">{{ $row->status }}</div>
                                     @break
