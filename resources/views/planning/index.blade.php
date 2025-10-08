@@ -29,7 +29,11 @@
                             {{-- <th>{{ $index + 1 }} </th> --}}
                             <th>
                                 <label for="check_{{ $row->id }}">
+                                    @if (($row->pa === null) && ($row->semaine_engagement !== 'Fait'))
+                                    <input type="checkbox" id="check_{{ $row->id }}" disabled/>
+                                    @else
                                     <input type="checkbox" id="check_{{ $row->id }}"/>
+                                    @endif
                                 </label>
                             </th>
                             <td>
@@ -43,8 +47,8 @@
                             <td> {{ $row->numero }} </td>
                             <td> {{ $row->semaine }} </td>
                             <td> {{ $row->semaine_engagement }} </td>
-                            <td> {{ $row->PA }}</td>
-                            <td> {{ $row->Poste }}</td>
+                            <td> {{ $row->pa }}</td>
+                            <td> {{ $row->poste }}</td>
                             <td>
                                 @switch($row->status)
                                     @case('Fait')
