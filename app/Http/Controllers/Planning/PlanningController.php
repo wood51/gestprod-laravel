@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Planning;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\VuePlanning;
 
 class PlanningController extends Controller
 {
@@ -12,7 +13,8 @@ class PlanningController extends Controller
      */
     public function index()
     {
-        return view('planning.index');
+        $rows = VuePlanning::orderBy('semaine','desc')->get();
+        return view('planning.index',['rows'=>$rows]);
     }
 
     /**
