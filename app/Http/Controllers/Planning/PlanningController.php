@@ -11,10 +11,31 @@ class PlanningController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rows = VuePlanning::orderBy('PA','asc')->orderBy('semaine_engagement','desc')->get();
-        return view('planning.index',['rows'=>$rows]);
+        if ($request->boolean('_dd')) {
+            return response()->json([
+                'HX-Request' => $request->header('HX-Request'),
+                'query'      => $request->query(),
+                'note'       => 'Debug OK sans 500'
+            ]);
+        }
+
+        $q = VuePlanning::query();
+        if ($request->filled('status')) {
+            $q->where('status', $request->string('status'));
+        }
+
+        //$rows = VuePlanning::orderBy('PA', 'asc')->orderBy('semaine_engagement', 'desc')->get();
+        $rows = VuePlanning::orderByDesc('semaine')->limit(50)->get();
+
+        // Si c’est un appel HTMX, on renvoie UNIQUEMENT le tbody
+        if ($request->header('HX-Request')) {
+            return view('planning.partials.tbody', compact('rows'));
+        }
+
+        $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
+        return view('planning.index', compact('rows', 'statuses'));
     }
 
     /**
