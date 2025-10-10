@@ -41,3 +41,4 @@ Route::get('kpi/qualite-mois/{week}/{nb_week}',[Qualite::class,'renderQualiteMoi
 
 // Planning
 Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');

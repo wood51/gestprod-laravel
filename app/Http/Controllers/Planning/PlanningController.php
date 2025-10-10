@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Planning;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VuePlanning;
+use Illuminate\Support\Facades\DB;
 
 class PlanningController extends Controller
 {
@@ -13,76 +14,33 @@ class PlanningController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->boolean('_dd')) {
-            return response()->json([
-                'HX-Request' => $request->header('HX-Request'),
-                'query'      => $request->query(),
-                'note'       => 'Debug OK sans 500'
-            ]);
-        }
+        $rows = $this->query($request)->orderByDesc('semaine')->get();
+        $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
+        return view('planning.index', compact('rows', 'statuses')); // TOUJOURS la vue complète
+    }
+
+    public function rows(Request $request)
+    {
+        $rows = $this->query($request)->orderByDesc('semaine')->limit(50)->get();
+        return view('planning.partials.tbody', compact('rows'));   // UNIQUEMENT le tbody
+    }
+
+    private function query(Request $r)
+    {
 
         $q = VuePlanning::query();
-        if ($request->filled('status')) {
-            $q->where('status', $request->string('status'));
+        if ($r->filled('status')) $q->where('status', $r->string('status'));
+        // (on ajoutera d'autres filtres ici plus tard)
+        if ($r->filled('eng')) {
+            // Normalise "2025-W41" -> "2025-41"
+            $eng = preg_replace('/\b(\d{4})-W(\d{2})\b/i', '$1-$2', $r->string('eng'));
+            // Préfixe pour taper "2025-4" et voir tout octobre par ex.
+            $q->where('semaine_engagement', 'like', (string)$eng . '%');
         }
 
-        //$rows = VuePlanning::orderBy('PA', 'asc')->orderBy('semaine_engagement', 'desc')->get();
-        $rows = VuePlanning::orderByDesc('semaine')->limit(50)->get();
-
-        // Si c’est un appel HTMX, on renvoie UNIQUEMENT le tbody
-        if ($request->header('HX-Request')) {
-            return view('planning.partials.tbody', compact('rows'));
+        if ($r->filled('type')) {
+            $q->where('type', $r->string('type')); // ex: Alternateur, Compresseur
         }
-
-        $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
-        return view('planning.index', compact('rows', 'statuses'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $q;
     }
 }
