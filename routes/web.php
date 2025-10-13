@@ -40,5 +40,5 @@ Route::get('kpi/api/qualite-mois/{week}/{nb_week}',[Qualite::class,'jsonQualiteM
 Route::get('kpi/qualite-mois/{week}/{nb_week}',[Qualite::class,'renderQualiteMois']);
 
 // Planning
-Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+Route::match(['get','post'],'/planning', [PlanningController::class, 'index'])->name('planning.index');
 Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
