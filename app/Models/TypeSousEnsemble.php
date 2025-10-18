@@ -10,6 +10,8 @@ class TypeSousEnsemble extends Model
     use SoftDeletes;
     protected $fillable = ['designation'];
 
+    protected $casts = ['modele_numero' => 'array'];
+
     public function typeEnsemble()
     {
         return $this->belongsTo(TypeEnsemble::class, 'typee_ensemble_id');
