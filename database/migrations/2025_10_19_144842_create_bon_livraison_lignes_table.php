@@ -12,7 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bon_livraison_lignes', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // -> num de BL
+            /*
+            planning_id
+            type -> pour switcher style de bl 
+            numero_meta -> snaspot nuuméro
+            article_ref
+            article designation
+            pa
+            poste
+            
+
+            */
             $table->timestamps();
         });
     }
