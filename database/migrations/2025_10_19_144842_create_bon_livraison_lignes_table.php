@@ -14,13 +14,17 @@ return new class extends Migration
         Schema::create('bon_livraison_lignes', function (Blueprint $table) {
             $table->id(); 
             $table->foreignId('bon_livraison_id')->constrained('bon_livraisons');
-            $table->foreignId('planning_id')->constrained('plannings')->nullable();  
-            $table->foreignId('type_sous_ensemble_id')->constrained('type_sous_ensembles')->nullable(); 
-            $table->json('numero_meta'); // numero_meta figer pour les collone du bl (je farais l'extraction direct)
-            $table->string('article_ref');
-            $table->string('article_designation');
-            $table->string('no_commande');
-            $table->string('poste');
+
+// Création des FK nullable a part car pb Mariadb mode strict
+            $table->unsignedBigInteger('planning_id')->nullable();  
+            $table->foreign('planning_id')->references('id')->on('plannings');
+
+            $table->json('numero_meta')->nullable(); // numero_meta figer pour les collone du bl (je farais l'extraction direct)
+            $table->string('article_ref')->nullable();
+            $table->string('article_designation')->nullable();
+            $table->integer('quantite')->nullable();
+            $table->string('no_commande')->nullable();
+            $table->string('poste')->nullable();
             $table->timestamps();
 
             $table->index('no_commande');

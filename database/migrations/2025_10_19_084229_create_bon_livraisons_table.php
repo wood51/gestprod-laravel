@@ -17,9 +17,13 @@ return new class extends Migration
             $table->timestamp('validated_at')->nullable();
             $table->timestamp('canceled_at')->nullable();
             $table->foreignId('created_by')->constrained('users'); 
-            $table->foreignId('validated_by')->constrained('users')->nullable(); 
-            $table->foreignId('canceled_by')->constrained('users')->nullable(); 
-            // pas de pdf ici , je préfère generer à la voler pour les test
+
+            // Création des FK nullable a part car pb Mariadb mode strict
+            $table->unsignedBigInteger('validated_by')->nullable(); 
+            $table->unsignedBigInteger('canceled_by')->nullable(); 
+            $table->foreign('validated_by')->references('id')->on('users');
+            $table->foreign('canceled_by')->references('id')->on('users');
+            
             $table->timestamps();
             $table->index(['state','created_at']);
         });
