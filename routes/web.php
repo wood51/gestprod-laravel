@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BonLivraison\BonLivraisons;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
@@ -42,3 +43,6 @@ Route::get('kpi/qualite-mois/{week}/{nb_week}',[Qualite::class,'renderQualiteMoi
 // Planning
 Route::match(['get','post'],'/planning', [PlanningController::class, 'index'])->name('planning.index');
 Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
+
+// Bon de livraisons
+route::get('bl/{no_bl}',[BonLivraisons::class,'index']);

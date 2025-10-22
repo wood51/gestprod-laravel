@@ -11,39 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class PlanningController extends Controller
 {
-    // /**
-    //  * Display a listing of the resource.
-    //  */
-    // public function index(Request $request)
-    // {
-    //     $rows = $this->query($request)->orderByDesc('semaine')->get();
-    //     $types = TypeSousEnsemble::all();
-    //     $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
-    //     return view('planning.index', compact('rows', 'statuses','types')); // TOUJOURS la vue complète
-    // }
-
-    // public function rows(Request $request)
-    // {
-    //     $rows = $this->query($request)->orderByDesc('semaine')->limit(50)->get();
-    //     return response()->view('planning.partials.tbody', compact('rows'));   // UNIQUEMENT le tbody
-    // }
-
-    // private function query(Request $r)
-    // {
-
-    //     $q = VuePlanning::query();
-    //     if ($r->filled('status')) $q->where('status', $r->string('status'));
-
-    //     if ($r->filled('eng')) {
-    //         $q->where('semaine_engagement', 'like', $r->string('eng') . '%');
-    //     }
-
-    //     if ($r->filled('type')) {
-    //         $q->where('type', $r->string('type')); // ex: Alternateur, Compresseur
-    //     }
-    //     return $q;
-    // }
-
     public function index(Request $request)
     {
         // On récupère les filtres proprement

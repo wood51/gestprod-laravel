@@ -68,6 +68,9 @@
                             <a href="/planning" class="btn btn-ghost">Planning</a>
                         </li>
                         <li>
+                            <a href="/bl/1" class="btn btn-ghost">BL</a>
+                        </li>
+                        <li>
                             <hr class="border-t border-gray-500 my-2" />
                         </li>
                     @endif
@@ -99,7 +102,6 @@
             <!-- Main Content-->
             {{-- <div id="content" class="flex flex-col flex-1 min-h-0 p-4" hx-get="{{ url('/planning') }}" hx-trigger="load"> --}}
             <div id="content" class="flex flex-col flex-1 min-h-0 p-4">
-                <!-- FIXME pour debug chargment du planning -->
                 <!-- contenu injecté ici -->
                 @yield('content')
             </div>
