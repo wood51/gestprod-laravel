@@ -1,60 +1,70 @@
 @extends('layout.app')
 
 @section('content')
-<div class="card w-full h-full bg-base-100 shadow-xl">
-    <div class="card-body overflow-y-auto">
+    <div class="card w-full h-full bg-base-100 shadow-xl">
+        <div class="card-body overflow-y-auto">
 
-        <div class="flex items-center justify-between">
-            <h2 class="card-title m-2">BON DE LIVRAISON</h2>
-            <form action="/bl/new" method="post">
-                @csrf
-                <button class="btn btn-sm btn-primary">Ajouter un BL</button>
-            </form>
-        </div>
+            <div class="flex items-center justify-between">
+                <h2 class="card-title m-2">BON DE LIVRAISON</h2>
+                <form action="/bl/new" method="post">
+                    @csrf
+                    <button class="btn btn-sm btn-primary">Ajouter un BL</button>
+                </form>
+            </div>
 
-        <div class="overflow-y-auto max-h-full">
-            <table class="table table-sm font-semibold">
-                <thead>
-                    <tr class="bg-blue-200">
-                        <th>N°</th>
-                        <th>Status</th>
-                        <th>Création</th>
-                        <th>Validation</th>
-                        <th>Annulation</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($rows as $r)
-                    <tr class="hover:bg-gray-100">
-                        <td>{{ $r->id }}</td>
-                        <td>
-                            @if ($r->state === 'validated')
-                            <div class="badge badge-outline badge-success text-sm">validé</div>
-                            @elseif($r->state === 'draft')
-                            <div class="badge badge-outline badge-warning text-sm">en cours</div>
-                            @elseif($r->state === 'canceled')
-                            <div class="badge badge-outline badge-error text-sm">annulé</div>
-                            @endif
-                        </td>
-                        <td>{{ strtoupper($r->createdBy?->username) }}
-                            <span class="font-normal">{{ $r->created_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
-                        </td>
-                        <td>{{ strtoupper($r->validatedBy?->username) }}
-                            <span class="font-normal">{{ $r->validated_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
-                        </td>
-                        <td>{{ strtoupper($r->canceledBy?->username) }}
-                            <span class="font-normal">{{ $r->canceled_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
-                        </td>
-                        <td>
-                            <a href="/bl/{{ $r->id }}"><i class="fas fa-eye text-sm text-info"></i></a>
-                        </td>
-                    </tr>
-                    @endforeach
-                
-                </tbody>
-            </table>
+            <div class="overflow-y-auto max-h-full">
+                <table class="table table-sm font-semibold">
+                    <thead>
+                        <tr class="bg-blue-200">
+                            <th>N°</th>
+                            <th>Status</th>
+                            <th>Création</th>
+                            <th>Validation</th>
+                            <th>Annulation</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($rows as $r)
+                            <tr class="hover:bg-gray-100">
+                                <td>{{ $r->id }}</td>
+                                <td>
+                                    @if ($r->state === 'validated')
+                                        <div class="badge badge-outline badge-success text-sm">validé</div>
+                                    @elseif($r->state === 'draft')
+                                        <div class="badge badge-outline badge-warning text-sm">en cours</div>
+                                    @elseif($r->state === 'canceled')
+                                        <div class="badge badge-outline badge-error text-sm">annulé</div>
+                                    @endif
+                                </td>
+                                <td>{{ strtoupper($r->createdBy?->username) }}
+                                    <span
+                                        class="font-normal">{{ $r->created_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
+                                </td>
+                                <td>{{ strtoupper($r->validatedBy?->username) }}
+                                    <span
+                                        class="font-normal">{{ $r->validated_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
+                                </td>
+                                <td>{{ strtoupper($r->canceledBy?->username) }}
+                                    <span
+                                        class="font-normal">{{ $r->canceled_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
+                                </td>
+                                <td>
+                                    @if ($r->nb_lines > 0)
+                                        <a href="/bl/{{ $r->id }}" class="text-sm text-primary"><i
+                                                class="fas fa-eye"></i></a>
+                                    @else
+                                        <a href="/bl/{{ $r->id }}"
+                                            class="text-sm text-neutral-content pointer-events-none"><i
+                                                class="fas fa-eye"></i></a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 @endsection
