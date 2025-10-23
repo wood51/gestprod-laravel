@@ -28,4 +28,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(DefautProduit::class);
     }
+
+    public function bonLivraisons() {
+        return $this->hasMany(BonLivraison::class);
+    }
 }

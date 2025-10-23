@@ -45,4 +45,6 @@ Route::match(['get','post'],'/planning', [PlanningController::class, 'index'])->
 Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
 
 // Bon de livraisons
-route::get('bl/{no_bl}',[BonLivraisons::class,'index']);
+route::get('bl',[BonLivraisons::class,'index']);
+route::post('bl/new',[BonLivraisons::class,'newBl']);
+route::get('bl/{no_bl}',[BonLivraisons::class,'showBlNumber']);

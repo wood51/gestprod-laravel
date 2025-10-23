@@ -8,7 +8,36 @@ class BonLivraison extends Model
 {
     protected $fillable = ['validated_at', 'canceled_at', 'created_by', 'validated_by', 'canceled_by'];
 
-    public function lignes() {
+    protected $with = [
+        'createdBy:id,nom,prenom,username',
+        'validatedBy:id,nom,prenom,username',
+        'canceledBy:id,nom,prenom,username',
+    ];
+
+    protected $casts = [
+    'created_at' => 'datetime',
+    'validated_at'=>'datetime',
+    'canceled_at' => 'datetime',
+    'updated_at' => 'datetime',
+];
+
+    public function lignes()
+    {
         return $this->hasMany(BonLivraisonLigne::class);
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function validatedBy()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
+    }
+
+    public function canceledBy()
+    {
+        return $this->belongsTo(User::class, 'canceled_by');
     }
 }

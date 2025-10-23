@@ -68,7 +68,7 @@
                             <a href="/planning" class="btn btn-ghost">Planning</a>
                         </li>
                         <li>
-                            <a href="/bl/1" class="btn btn-ghost">BL</a>
+                            <a href="/bl" class="btn btn-ghost">Bon de livraisons</a>
                         </li>
                         <li>
                             <hr class="border-t border-gray-500 my-2" />
