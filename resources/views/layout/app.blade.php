@@ -42,7 +42,8 @@
                         </a>
 
                         <a href="#" class="text-gray-500 hover:text-indigo-500 text-xl"
-                            title="{{ ucfirst(Auth::user()->prenom) }} - Paramètres">
+                        {{-- FIXME --}}
+                            title="{{ ucfirst(Auth::user()->prenom)  }} - Paramètres"> 
                             <i class="fa-solid fa-user"></i>
                         </a>
 

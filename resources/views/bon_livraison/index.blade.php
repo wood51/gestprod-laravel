@@ -6,7 +6,7 @@
 
             <div class="flex items-center justify-between">
                 <h2 class="card-title m-2">BON DE LIVRAISON</h2>
-                <form action="/bl/new" method="post">
+                <form action="{{ route('bl.create') }}" method="post">
                     @csrf
                     <button class="btn btn-sm btn-primary">Ajouter un BL</button>
                 </form>
@@ -50,14 +50,31 @@
                                         class="font-normal">{{ $r->canceled_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
                                 </td>
                                 <td>
-                                    @if ($r->nb_lines > 0)
-                                        <a href="/bl/{{ $r->id }}" class="text-sm text-primary"><i
-                                                class="fas fa-eye"></i></a>
-                                    @else
-                                        <a href="/bl/{{ $r->id }}"
-                                            class="text-sm text-neutral-content pointer-events-none"><i
-                                                class="fas fa-eye"></i></a>
-                                    @endif
+                                    <div class="flex justify-center items-center gap-4">
+
+                                        {{-- Visualisation --}}
+                                        <a href="{{ route('bl.show', $r->id) }}"
+                                            class="text-sm {{ $r->nb_lines ? 'text-primary' : 'text-neutral-content pointer-events-none' }}">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {{-- Edition --}}
+                                        <a href="{{ route('bl.show', $r->id) }}"
+                                            class="text-sm {{ $r->state === 'draft' ? 'text-warning' : 'text-neutral-content pointer-events-none' }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </a>
+                                        {{-- Suppression --}}
+                                        {{-- <a href="{{ route('bl.delete', $r->id) }}"
+                                            class="text-sm {{ $r->state != 'canceled' ? 'text-error' : 'text-neutral-content pointer-events-none' }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a> --}}
+                                        <form action="{{ route('bl.delete', $r->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn btn-link text-sm {{ $r->state != 'canceled' ? 'text-error' : 'text-neutral-content pointer-events-none' }}"><i
+                                                    class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

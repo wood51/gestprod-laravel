@@ -3,19 +3,30 @@
 @section('content')
     <div class="card w-full h-full bg-base-100 shadow-xl">
         <div class="card-body overflow-y-auto">
-            <h2 class="card-title m-2">
-                <a href="/bl"><i class="fa-solid fa-share fa-flip-horizontal"></i></a>
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="card-title m-2">
+                        <a href="/bl"><i class="fa-solid fa-share fa-flip-horizontal"></i></a>
 
-                Bon de livraison N° {{ $bl->id }}
-                @if ($bl->state === 'validated')
-                    <div class="badge badge-outline badge-success text-sm">validé </div>
-                @elseif($bl->state === 'draft')
-                    <div class="badge badge-outline badge-warning text-sm">en cours</div>
-                @elseif($bl->state === 'canceled')
-                    <div class="badge badge-outline badge-error text-sm">annulé</div>
-                @endif
+                        Bon de livraison N° {{ $bl->id }}
+                        @if ($bl->state === 'validated')
+                            <div class="badge badge-outline badge-success text-sm">validé </div>
+                        @elseif($bl->state === 'draft')
+                            <div class="badge badge-outline badge-warning text-sm">en cours</div>
+                        @elseif($bl->state === 'canceled')
+                            <div class="badge badge-outline badge-error text-sm">annulé</div>
+                        @endif
 
-            </h2>
+                    </h2>
+                </div>
+                <div>
+                    <form action="{{ route('bl.validate',$bl->id) }}" method="post">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="btn btn-sm btn-success">Valider le Bl</button>
+                    </form>
+                </div>
+            </div>
             {{-- <td>{{ strtoupper($bl->createdBy?->username) }}
                 <span class="font-normal">{{ $bl->created_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
             </td> --}}
@@ -29,6 +40,7 @@
                             <td>Poste</td>
                             <td>Qte</td>
                             {{-- <td>Numero</td> --}}
+                            {{ count($lignes) }}
                             @if ($lignes->isNotEmpty())
                                 @foreach ($lignes->first()?->planning?->numero_meta as $key => $value)
                                     <td>{{ $key }}</td>
@@ -44,10 +56,10 @@
                                 <td>{{ $ligne->planning->no_commande }}</td>
                                 <td>{{ $ligne->planning->no_poste }}</td>
                                 <td>1</td>
+
                                 @foreach ($ligne->planning->numero_meta as $num)
                                     <td>{{ $num }}</td>
                                 @endforeach
-
 
                             </tr>
                         @endforeach

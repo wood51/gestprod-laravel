@@ -11,6 +11,8 @@ use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
 
 use App\Http\Controllers\Planning\PlanningController;
+use App\Models\BonLivraison;
+
 // use App\Http\Controllers\TempsProduction;
 
 // Page Principale
@@ -45,6 +47,8 @@ Route::match(['get','post'],'/planning', [PlanningController::class, 'index'])->
 Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
 
 // Bon de livraisons
-route::get('bl',[BonLivraisons::class,'index']);
-route::post('bl/new',[BonLivraisons::class,'newBl']);
-route::get('bl/{no_bl}',[BonLivraisons::class,'showBlNumber']);
+route::get('bl',[BonLivraisons::class,'index'])->name('bl.index');
+route::post('bl/new',[BonLivraisons::class,'newBl'])->name('bl.create');
+route::get('bl/{no_bl}',[BonLivraisons::class,'showBlNumber'])->name('bl.show');
+route::patch('/bl/validate/{no_bl}',[BonLivraisons::class,'validateBl'])->name('bl.validate');
+route::delete('/bl/delete/{no_bl}',[BonLivraisons::class,'deleteBl'])->name('bl.delete');
