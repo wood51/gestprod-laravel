@@ -10,7 +10,7 @@ class Planning extends Model
     use SoftDeletes;
 
     protected $fillable = ['article_id', 'type_sous_ensemble_id', 'numero', 'semaine', 'engagement', 'commentaire', 'prete'];
-    protected $casts = [ 'numero_meta' => 'array'];
+    // protected $casts = [ 'numero_meta' => 'array'];
 
     public function article()
     {

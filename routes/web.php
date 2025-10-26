@@ -14,41 +14,42 @@ use App\Http\Controllers\Planning\PlanningController;
 use App\Models\BonLivraison;
 
 // use App\Http\Controllers\TempsProduction;
-
-// Page Principale
-Route::get('/', [HomeController::class, 'showHome'])->name('home')->middleware('auth');
-
-// Authentification
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Dashboard KPI
-Route::get('/kpi/dashboard',[Dashboard::class,'showDashboard'] )->name('dashboard');
-Route::post('/kpi/api/set-week', [Dashboard::class,'setDashboardWeek']);
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'showHome'])->name('home');
 
-Route::get('/kpi/api/engagement-type/{week}',[Engagement::class,'jsonEngagementType']);
-Route::get('/kpi/api/engagement/{week}',[Engagement::class,'jsonEngagement']);
 
-Route::get('/kpi/api/respect-engagement/{week}',[Engagement::class,'jsonRespectEngagement']);
-Route::get('/kpi/respect-engagement/{week}',[Engagement::class,'renderRespectEngagement']);
 
-Route::get('/kpi/api/rendement-mois/{week}/{nb_week}',[Rendement::class,'jsonRendementMois']);
-Route::get('/kpi/rendement-mois/{week}/{nb_week}',[Rendement::class,'renderRendementMois']);
+    // Dashboard KPI
+    Route::get('/kpi/dashboard', [Dashboard::class, 'showDashboard'])->name('dashboard');
+    Route::post('/kpi/api/set-week', [Dashboard::class, 'setDashboardWeek']);
 
-Route::get('kpi/api/qualite/{week}',[Qualite::class,'jsonQualite']);
-Route::get('kpi/qualite/{week}',[Qualite::class,'renderQualite']);
+    Route::get('/kpi/api/engagement-type/{week}', [Engagement::class, 'jsonEngagementType']);
+    Route::get('/kpi/api/engagement/{week}', [Engagement::class, 'jsonEngagement']);
 
-Route::get('kpi/api/qualite-mois/{week}/{nb_week}',[Qualite::class,'jsonQualiteMois']);
-Route::get('kpi/qualite-mois/{week}/{nb_week}',[Qualite::class,'renderQualiteMois']);
+    Route::get('/kpi/api/respect-engagement/{week}', [Engagement::class, 'jsonRespectEngagement']);
+    Route::get('/kpi/respect-engagement/{week}', [Engagement::class, 'renderRespectEngagement']);
 
-// Planning
-Route::match(['get','post'],'/planning', [PlanningController::class, 'index'])->name('planning.index');
-Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
+    Route::get('/kpi/api/rendement-mois/{week}/{nb_week}', [Rendement::class, 'jsonRendementMois']);
+    Route::get('/kpi/rendement-mois/{week}/{nb_week}', [Rendement::class, 'renderRendementMois']);
 
-// Bon de livraisons
-route::get('bl',[BonLivraisons::class,'index'])->name('bl.index');
-route::post('bl/new',[BonLivraisons::class,'newBl'])->name('bl.create');
-route::get('bl/{no_bl}',[BonLivraisons::class,'showBlNumber'])->name('bl.show');
-route::patch('/bl/validate/{no_bl}',[BonLivraisons::class,'validateBl'])->name('bl.validate');
-route::delete('/bl/delete/{no_bl}',[BonLivraisons::class,'deleteBl'])->name('bl.delete');
+    Route::get('kpi/api/qualite/{week}', [Qualite::class, 'jsonQualite']);
+    Route::get('kpi/qualite/{week}', [Qualite::class, 'renderQualite']);
+
+    Route::get('kpi/api/qualite-mois/{week}/{nb_week}', [Qualite::class, 'jsonQualiteMois']);
+    Route::get('kpi/qualite-mois/{week}/{nb_week}', [Qualite::class, 'renderQualiteMois']);
+
+    // Planning
+    Route::match(['get', 'post'], '/planning', [PlanningController::class, 'index'])->name('planning.index');
+    Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
+
+    // Bon de livraisons
+    route::get('bl', [BonLivraisons::class, 'index'])->name('bl.index');
+    route::post('bl/new', [BonLivraisons::class, 'newBl'])->name('bl.create');
+    route::get('bl/{no_bl}', [BonLivraisons::class, 'showBlNumber'])->name('bl.show');
+    route::patch('/bl/validate/{no_bl}', [BonLivraisons::class, 'validateBl'])->name('bl.validate');
+    route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
+});

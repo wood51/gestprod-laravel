@@ -9,7 +9,7 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['reference', 'type_sous_ensemble_id', 'couleur', 'coefficient', 'commentaire'];
+    protected $fillable = ['reference','designation', 'type_sous_ensemble_id', 'couleur', 'coefficient', 'commentaire'];
 
     public function typeSousEnsemble()
     {
