@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BonLivraison\BonLivraisons;
+use App\Http\Controllers\BonLivraison\PdfBonLivraison;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
@@ -52,4 +53,7 @@ Route::middleware('auth')->group(function () {
     route::get('bl/{no_bl}', [BonLivraisons::class, 'showBlNumber'])->name('bl.show');
     route::patch('/bl/validate/{no_bl}', [BonLivraisons::class, 'validateBl'])->name('bl.validate');
     route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
+
+    // Test design
+    route::get('bl/pdf/{no_bl}',[PdfBonLivraison::class,'makePdf'])->name('bl.pdf');
 });

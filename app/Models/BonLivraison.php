@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class BonLivraison extends Model
@@ -15,11 +16,11 @@ class BonLivraison extends Model
     ];
 
     protected $casts = [
-    'created_at' => 'datetime',
-    'validated_at'=>'datetime',
-    'canceled_at' => 'datetime',
-    'updated_at' => 'datetime',
-];
+        'created_at' => 'datetime',
+        'validated_at' => 'datetime',
+        'canceled_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function lignes()
     {
@@ -39,5 +40,10 @@ class BonLivraison extends Model
     public function canceledBy()
     {
         return $this->belongsTo(User::class, 'canceled_by');
+    }
+
+    public function hasLines()
+    {
+        return $this->lignes()->exists();
     }
 }

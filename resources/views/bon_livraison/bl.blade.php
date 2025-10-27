@@ -39,9 +39,7 @@
                             <td>PA</td>
                             <td>Poste</td>
                             <td>Qte</td>
-                            {{-- TEMP debug --}}
 
-                            {{-- <td>Numero</td> --}}
                             @if ($lignes->isNotEmpty())
                                 @foreach ($lignes->first()->numero_meta as $key => $value)
                                     <td>{{ $key }}</td>
@@ -56,7 +54,7 @@
                                 <td>{{ $ligne->article_ref }}</td>
                                 <td>{{ $ligne->article_designation }}</td>
                                 <td>{{ $ligne->no_commande }}</td>
-                                <td>{{ $ligne->poste }}</td>
+                                <td>{{ $ligne->no_poste }}</td>
                                 <td>1</td>
 
                                 @foreach ($ligne->numero_meta as $num)
@@ -66,6 +64,7 @@
                             </tr>
                         @endforeach
                     </tbody>
+                </table>
             </div>
         </div>
     </div>
