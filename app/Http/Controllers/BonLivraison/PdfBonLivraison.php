@@ -13,7 +13,7 @@ class PdfBonLivraison
         $bl = BonLivraison::findOrFail($no_bl);
         $date_bl = $bl->validated_at->format("d-m-Y");
         $lignes = $service->read($no_bl);
-        $html = view('bon_livraison.pdf_bl', compact('lignes', 'bl'))->render();
+
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->setPrintHeader(false);
@@ -26,13 +26,39 @@ class PdfBonLivraison
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
         $pdf->setFooterFont(['times', '', 10]);
 
-         $pdf->SetFont('times', '', 10);
-        // $pdf->MultiCell(0, 0, "BON DE LIVRAISON N°$no_bl \ndu $date_bl\n", 0, 'C');
-        $pdf->writeHTML($html,false,true,false,false,'C');
-        
+        $pdf->SetFont('times', '', 11);
+
+        // Logo
+        $pdf->Image(public_path('img/logo_DEE.png'), 10, 10, 45);
+        $pdf->SetY(15);
+
+        $title = view('bon_livraison.partials.pdfTitle', compact('bl'))->render();
+        $pdf->writeHTML($title, true, false, true, false);
+        $pdf->ln(20);
+
+        $pdf->SetFont('times', '', 10);
+        $adresse = view('bon_livraison.partials.pdfAdresseTable')->render();
+        $pdf->writeHTML($adresse, true, false, true, false);
+        $pdf->ln(9);
+
+        $transport = view('bon_livraison.partials.pdfTransport')->render();
+        $pdf->writeHTML($transport, true, false, true, false);
+        $pdf->ln(0);
+
+        $table = view('bon_livraison.partials.pdfAlternateurTable', compact('lignes', 'bl'))->render();
+        $pdf->writeHTML($table, true, false, true, false);
+        $pdf->ln(1);
+
+        $observation = view('bon_livraison.partials.pdfObservation', compact('lignes', 'bl'))->render();
+        $pdf->writeHTML($observation, true, false, true, false);
+        $pdf->ln(1);
+
+        $signature = view('bon_livraison.partials.pdfSignature', compact('lignes', 'bl'))->render();
+        $pdf->writeHTML($signature, true, false, true, false);
+
         $pdf->Output("BL_{$no_bl}.pdf", 'I');   // 'I' pour afficher, 'D' pour télécharger
+
 
 
     }
 }
-

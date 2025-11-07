@@ -1,0 +1,1 @@
+<h2 style="text-align: center; margin-bottom:20mm;">BON DE LIVRAISON N° {{ $bl->id }}<br />Du {{ $bl->validated_at->format('d/m/Y') }}</h2>
