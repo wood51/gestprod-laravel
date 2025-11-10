@@ -14,6 +14,7 @@ class PdfBonLivraison
         $date_bl = $bl->validated_at->format("d-m-Y");
         $lignes = $service->read($no_bl);
 
+        $type=$bl->typeSousEnsemble->designation;
 
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $pdf->setPrintHeader(false);
@@ -34,27 +35,34 @@ class PdfBonLivraison
 
         $title = view('bon_livraison.partials.pdfTitle', compact('bl'))->render();
         $pdf->writeHTML($title, true, false, true, false);
-        $pdf->ln(20);
+        $pdf->ln(18);
 
         $pdf->SetFont('times', '', 10);
         $adresse = view('bon_livraison.partials.pdfAdresseTable')->render();
         $pdf->writeHTML($adresse, true, false, true, false);
-        $pdf->ln(9);
+        $pdf->ln(8);
 
         $transport = view('bon_livraison.partials.pdfTransport')->render();
         $pdf->writeHTML($transport, true, false, true, false);
         $pdf->ln(0);
 
-        $table = view('bon_livraison.partials.pdfAlternateurTable', compact('lignes', 'bl'))->render();
+        $table = view('bon_livraison.partials.pdf'.$type.'Table', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($table, true, false, true, false);
         $pdf->ln(1);
 
-        $observation = view('bon_livraison.partials.pdfObservation', compact('lignes', 'bl'))->render();
+        $observation = view('bon_livraison.partials.pdf'.$type.'Observation', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($observation, true, false, true, false);
-        $pdf->ln(1);
+        $pdf->ln(2);
 
         $signature = view('bon_livraison.partials.pdfSignature', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($signature, true, false, true, false);
+
+        // Annulé
+        // TODO image annulé insérer en conditionnel 
+        $pdf->StartTransform();
+        $pdf->Rotate(20, 50, 138);
+        $pdf->Image(public_path('img/annulé.png'), 0, 138.5, 175);
+        $pdf->StopTransform();
 
         $pdf->Output("BL_{$no_bl}.pdf", 'I');   // 'I' pour afficher, 'D' pour télécharger
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BonLivraison extends Model
 {
@@ -45,5 +46,9 @@ class BonLivraison extends Model
     public function hasLines()
     {
         return $this->lignes()->exists();
+    }
+
+    public function typeSousEnsemble() {
+        return $this->BelongsTo(TypeSousEnsemble::class);
     }
 }
