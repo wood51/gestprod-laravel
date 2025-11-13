@@ -2,7 +2,7 @@
     <tr class="hover:bg-base-300" id="planning_{{ $row->id }}">
         <th>
             <label for="check_{{ $row->id }}">
-                @if ($row->pa === null && $row->semaine_engagement !== 'Fait')
+                @if ($row->no_commande === null && $row->semaine_engagement !== 'Fait')
                     <input type="checkbox" id="check_{{ $row->id }}" disabled />
                 @else
                     <input type="checkbox" id="check_{{ $row->id }}" />
@@ -19,8 +19,8 @@
         <td> {{ $row->numero }} </td>
         <td> {{ $row->semaine }} </td>
         <td> {{ $row->semaine_engagement }} </td>
-        <td> {{ $row->pa }}</td>
-        <td> {{ $row->poste }}</td>
+        <td> {{ $row->no_commande }}</td>
+        <td> {{ $row->no_poste }}</td>
         <td>
             @switch($row->status)
                 @case('Fait')

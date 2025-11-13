@@ -18,6 +18,8 @@ return new class extends Migration
             ptse.designation  AS type,
             pp.numero,
             pp.semaine,
+            pp.no_commande,
+            pp.no_poste,
             pe.semaine_engagee AS semaine_engagement,
             pp.prete,
             CASE pe.status

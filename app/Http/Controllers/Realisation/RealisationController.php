@@ -19,6 +19,7 @@ class RealisationController extends Controller
         $eng    = $request->string('eng')->trim()->toString();
         $type   = $request->string('type')->trim()->toString();
 
+        $eng = "2025-38";
 
         $rows = VueRealisation::query()
             ->when($reference !== '',fn($q)=> $q->where('reference',$reference))
@@ -26,6 +27,7 @@ class RealisationController extends Controller
             ->when($eng    !== '', fn($q) => $q->where('semaine_engagement', 'like', $eng . '%'))
             ->when($type   !== '', fn($q) => $q->where('type', $type))
             ->orderByDesc('semaine_engagement')
+            ->orderBy('reference')
             ->when($request->header('HX-Request'), fn($q) => $q->limit(50))
             ->get();
 

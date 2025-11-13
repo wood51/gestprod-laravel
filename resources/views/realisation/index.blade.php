@@ -7,7 +7,8 @@
             <div class="overflow-y-auto max-h-full">
                 {{-- <div class="flex gap-2 mb-2">
             </div> --}}
-                <form hx-post="{{ route('realisation.index') }}" hx-trigger="submit" hx-target="#tbody-realisation" hx-push-url="false">
+                <form hx-post="{{ route('realisation.index') }}" hx-trigger="submit" hx-target="#tbody-realisation"
+                    hx-swap="outerHtml" hx-push-url="false">
                     @csrf
                     <table class="table table-sm">
                         <thead class="sticky top-0 z-10">
@@ -37,7 +38,7 @@
                                     <select name="refs" class="select select-xs select-bordered w-full">
                                         <option value="">Tous</option>
                                         @foreach ($refs as $r)
-                                            <option value="{{ $r->reference }}" @selected(request('refs')=== $r->reference)>
+                                            <option value="{{ $r->reference }}" @selected(request('refs') === $r->reference)>
                                                 {{ $r->reference }}
                                             </option>
                                         @endforeach
@@ -80,8 +81,8 @@
                                     <button type="submit" class="btn btn-xs btn-primary">Appliquer</button>
 
                                     {{-- Reset logique (ne re-render QUE le tbody) --}}
-                                    <a class="btn btn-xs" hx-get="{{ route('realisation.rows') }}" hx-target="#tbody-planning"
-                                        hx-push-url="true" hx-vals='{"status": ""}'>
+                                    <a class="btn btn-xs" hx-get="{{ route('realisation.rows') }}"
+                                        hx-target="#tbody-planning" hx-push-url="true" hx-vals='{"status": ""}'>
                                         Reset
                                     </a>
                                 </th>
@@ -96,4 +97,35 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // helpers
+        const boxes = () => document.querySelectorAll('tbody input[type="checkbox"]:not(:disabled)');
+        const syncAll = () => {
+            const check_all = document.querySelector('#check_all');
+            if (!check_all) return;
+            check_all.checked = [...boxes()].every(cb => cb.checked);
+        };
+        const toggleAll = (checked) => boxes().forEach(cb => cb.checked = checked);
+
+        // délégation globale
+        document.addEventListener('change', (e) => {
+            if (e.target.matches('#check_all')) {
+                // clic sur la case master
+                toggleAll(e.target.checked);
+            } else if (e.target.matches('tbody input[type="checkbox"]')) {
+                // clic sur une case enfant
+                syncAll();
+            }
+        });
+
+        // après chaque refresh HTMX → reset le check_all
+        document.addEventListener('htmx:afterSwap', (e) => {
+            const check_all = document.querySelector('#check_all');
+            if (check_all) check_all.checked = false;
+        });
+
+        // optionnel, au premier chargement
+        document.addEventListener('DOMContentLoaded', syncAll);
+    </script>
 @endsection
