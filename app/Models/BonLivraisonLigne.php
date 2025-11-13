@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class BonLivraisonLigne extends Model
 {
 
-    public function planning()
+    public function realisation()
     {
-        return $this->belongsTo(Planning::class);
+        return $this->belongsTo(Realisation::class);
     }
 
     // Accessors

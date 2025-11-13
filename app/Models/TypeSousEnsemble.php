@@ -22,9 +22,9 @@ class TypeSousEnsemble extends Model
         return $this->hasMany(Article::class);
     }
 
-    public function plannings()
+    public function realisations()
     {
-        return $this->hasMany(Planning::class);
+        return $this->hasMany(Realisation::class);
     }
 
     public function catalogueDefauts()

@@ -16,9 +16,9 @@ class Article extends Model
         return $this->belongsTo(TypeSousEnsemble::class, 'type_sous_ensemble_id');
     }
 
-    public function plannings()
+    public function realisations()
     {
-        return $this->hasMany(Planning::class);
+        return $this->hasMany(Realisation::class);
     }
 
 

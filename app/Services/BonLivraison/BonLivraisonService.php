@@ -23,8 +23,8 @@ class BonLivraisonService
     {
         $lines = BonLivraisonLigne::where('bon_livraison_id',  $no_bl)
             ->with([
-                'planning:id,article_id,numero_meta,no_commande,no_poste',
-                'planning.article:id,reference,designation',
+                'realisation:id,article_id,numero_meta,no_commande,no_poste',
+                'realisation.article:id,reference,designation',
             ])
             ->get();
 

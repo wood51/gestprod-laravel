@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\TypeSousEnsemble;
 use Illuminate\Http\Request;
-use App\Models\VuePlanning;
+use App\Models\VueRealisation;
 use Illuminate\Support\Facades\DB;
 
 class RealisationController extends Controller
@@ -20,8 +20,8 @@ class RealisationController extends Controller
         $type   = $request->string('type')->trim()->toString();
 
 
-        $rows = VuePlanning::query()
-            ->when($reference !== '',fn($q)=> $q->where('refs',$reference))
+        $rows = VueRealisation::query()
+            ->when($reference !== '',fn($q)=> $q->where('reference',$reference))
             ->when($status !== '', fn($q) => $q->where('status', $status))
             ->when($eng    !== '', fn($q) => $q->where('semaine_engagement', 'like', $eng . '%'))
             ->when($type   !== '', fn($q) => $q->where('type', $type))

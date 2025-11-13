@@ -9,9 +9,9 @@ class ControleProduit extends Model
 {
     protected $fillable = ['planning_id', 'etat_id', 'hasDefault', 'commentaire'];
     protected $casts = ['hasDefault' => 'boolean'];
-    public function planning()
+    public function realisation()
     {
-        return $this->belongsTo(Planning::class);
+        return $this->belongsTo(Realisation::class);
     }
 
     public function etat()
