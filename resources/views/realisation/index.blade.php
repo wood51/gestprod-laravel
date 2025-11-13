@@ -3,11 +3,11 @@
 @section('content')
     <div class="card w-full h-full bg-base-100 shadow-xl">
         <div class="card-body overflow-y-auto">
-            <h2 class="card-title m-2">Planning</h2>
+            <h2 class="card-title m-2">Produits Réalisés</h2>
             <div class="overflow-y-auto max-h-full">
                 {{-- <div class="flex gap-2 mb-2">
             </div> --}}
-                <form hx-post="{{ route('planning.index') }}" hx-trigger="submit" hx-target="#tbody-planning" hx-push-url="false">
+                <form hx-post="{{ route('realisation.index') }}" hx-trigger="submit" hx-target="#tbody-realisation" hx-push-url="false">
                     @csrf
                     <table class="table table-sm">
                         <thead class="sticky top-0 z-10">
@@ -80,7 +80,7 @@
                                     <button type="submit" class="btn btn-xs btn-primary">Appliquer</button>
 
                                     {{-- Reset logique (ne re-render QUE le tbody) --}}
-                                    <a class="btn btn-xs" hx-get="{{ route('planning.rows') }}" hx-target="#tbody-planning"
+                                    <a class="btn btn-xs" hx-get="{{ route('realisation.rows') }}" hx-target="#tbody-planning"
                                         hx-push-url="true" hx-vals='{"status": ""}'>
                                         Reset
                                     </a>
@@ -88,8 +88,8 @@
                             </tr>
                         </thead>
 
-                        <tbody id="tbody-planning">
-                            @include('planning.partials.tbody')
+                        <tbody id="tbody-realisation">
+                            @include('realisation.partials.tbody')
                         </tbody>
                     </table>
                 </form>

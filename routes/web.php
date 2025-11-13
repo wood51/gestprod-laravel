@@ -11,7 +11,7 @@ use App\Http\Controllers\Kpi\Dashboard;
 use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
 
-use App\Http\Controllers\Planning\PlanningController;
+use App\Http\Controllers\Realisation\RealisationController;
 use App\Models\BonLivraison;
 
 // use App\Http\Controllers\TempsProduction;
@@ -44,8 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::get('kpi/qualite-mois/{week}/{nb_week}', [Qualite::class, 'renderQualiteMois']);
 
     // Planning
-    Route::match(['get', 'post'], '/planning', [PlanningController::class, 'index'])->name('planning.index');
-    Route::get('/planning/rows', [PlanningController::class, 'rows'])->name('planning.rows');
+    Route::match(['get', 'post'], '/realisation', [RealisationController::class, 'index'])->name('realisation.index');
+    Route::get('/realisation/rows', [RealisationController::class, 'rows'])->name('realisation.rows');
 
     // Bon de livraisons
     route::get('bl', [BonLivraisons::class, 'index'])->name('bl.index');

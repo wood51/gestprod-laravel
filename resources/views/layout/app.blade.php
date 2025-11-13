@@ -66,7 +66,7 @@
                             <a href="/kpi/dashboard" target="_blank" class="btn btn-ghost">Dashboard KPI</a>
                         </li>
                         <li>
-                            <a href="/planning" class="btn btn-ghost">Planning</a>
+                            <a href="/realisation" class="btn btn-ghost">Realisation</a>
                         </li>
                         <li>
                             <a href="/bl" class="btn btn-ghost">Bon de livraisons</a>

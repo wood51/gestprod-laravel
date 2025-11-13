@@ -29,7 +29,7 @@ return new class extends Migration
                 SUM(CASE WHEN pe.status = 'fait' THEN 1 ELSE 0 END) AS produit,
                 SUM(CASE WHEN pe.status = 'reporte' THEN 1 ELSE 0 END) AS reporte
             FROM engagements pe
-            JOIN plannings pp ON pe.planning_id = pp.id
+            JOIN realisations pp ON pe.planning_id = pp.id
             JOIN articles pa ON pp.article_id = pa.id
             JOIN type_sous_ensembles ptse ON pa.type_sous_ensemble_id = ptse.id
             JOIN type_ensembles pte ON pa.type_sous_ensemble_id = pte.type_sous_ensemble_id
