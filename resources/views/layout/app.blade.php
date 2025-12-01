@@ -8,18 +8,18 @@
     <title>Document</title>
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-800 dark:text-gray-200 font-sans text-gray-800 h-full overflow-auto">
+<body class="bg-base-200 dark:bg-gray-800 dark:text-gray-200 font-sans text-gray-800 h-full overflow-auto">
 
     <!-- Layout principal -->
     <div class="flex h-full">
 
         <!-- Sidebar -->
-        <aside class="w-72 bg-gray-700 shadow-md hidden md:block pb-6 px-4">
+        <aside class="w-72 bg-neutral shadow-md hidden md:block pb-6 px-4">
             <div>
                 <div class="flex flex-col items-center m-4">
                     <div class="flex items-center gap-4">
                         <img src="{{ asset('img/gears.svg') }}" width="50" alt="Logo GestProd" />
-                        <span class="text-2xl sm:text-3xl font-semibold text-indigo-400">GESTPROD</span>
+                        <span class="text-2xl sm:text-3xl font-semibold text-indigo-500">GESTPROD</span>
                     </div>
                     <span class="text-base text-gray-500 text-center font-semibold italic">Gestion de production
                         DEE</span>

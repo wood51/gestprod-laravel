@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('kpi/qualite-mois/{week}/{nb_week}', [Qualite::class, 'renderQualiteMois']);
 
     // Planning
-    Route::match(['get', 'post'], '/realisation', [RealisationController::class, 'index'])->name('realisation.index');
+    Route::get('/realisation', [RealisationController::class, 'index'])->name('realisation.index');
     Route::get('/realisation/rows', [RealisationController::class, 'rows'])->name('realisation.rows');
 
     // Bon de livraisons
@@ -55,5 +55,5 @@ Route::middleware('auth')->group(function () {
     route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
 
     // Test design
-    route::get('bl/pdf/{no_bl}',[PdfBonLivraison::class,'makePdf'])->name('bl.pdf');
+    route::get('bl/pdf/{no_bl}', [PdfBonLivraison::class, 'makePdf'])->name('bl.pdf');
 });

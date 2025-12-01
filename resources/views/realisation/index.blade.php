@@ -1,131 +1,46 @@
 @extends('layout.app')
 
 @section('content')
-    <div class="card w-full h-full bg-base-100 shadow-xl">
-        <div class="card-body overflow-y-auto">
-            <h2 class="card-title m-2">Produits Réalisés</h2>
-            <div class="overflow-y-auto max-h-full">
-                {{-- <div class="flex gap-2 mb-2">
-            </div> --}}
-                <form hx-post="{{ route('realisation.index') }}" hx-trigger="submit" hx-target="#tbody-realisation"
-                    hx-swap="outerHtml" hx-push-url="false">
-                    @csrf
-                    <table class="table table-sm">
-                        <thead class="sticky top-0 z-10">
-                            {{-- Titres --}}
-                            <tr class="bg-blue-200">
-                                <th class="w-10">
-                                    <label for="check_all">
-                                        <input type="checkbox" id="check_all" />
-                                    </label>
-                                </th>
-                                <th>Référence</th>
-                                <th>Type</th>
-                                <th>Numero</th>
-                                <th>Semaine</th>
-                                <th>Engagement</th>
-                                <th>PA</th>
-                                <th>Poste</th>
-                                <th>Status</th>
-                                <th>Réalisée</th>
-                                <th>Action</th>
-                            </tr>
+<div class="card w-full h-full bg-base-100 shadow-xl">
+    <div class="card-body overflow-y-auto flex flex-col">
+        <h2 class="card-title m-2">Produits Réalisés</h2>
+        <div class="flex-1 overflow-y-auto max-h-full">
 
-                            {{-- Filtres (on ne met QUE Status pour l’instant) --}}
-                            <tr class="bg-blue-100/80 backdrop-blur">
-                                <th></th>
-                                <th>
-                                    <select name="refs" class="select select-xs select-bordered w-full">
-                                        <option value="">Tous</option>
-                                        @foreach ($refs as $r)
-                                            <option value="{{ $r->reference }}" @selected(request('refs') === $r->reference)>
-                                                {{ $r->reference }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </th>
-                                <th>
-                                    <select name="type" class="select select-xs select-bordered w-full">
-                                        <option value="">Tous</option>
-                                        @foreach ($types as $t)
-                                            <option value="{{ $t->designation }}" @selected(request('type') === $t->designation)>
-                                                {{ $t->designation }}</option>
-                                        @endforeach
-                                    </select>
-                                </th>
-                                <th></th>
-                                <th></th>
-                                <th>
-                                    <input name="eng" value="{{ request('eng') }}" placeholder="YYYY-WW"
-                                        class="input input-xs input-bordered w-full" />
-                                </th>
-                                <th></th>
-                                <th></th>
-
-
-                                {{-- Status --}}
-                                <th>
-                                    <select name="status" class="select select-xs select-bordered w-full">
-                                        <option value="">Tous</option>
-                                        @foreach ($statuses ?? ['Fait', 'Reporté', 'En cours', 'Engagé'] as $s)
-                                            <option value="{{ $s }}" @selected(request('status') === $s)>
-                                                {{ $s }}</option>
-                                        @endforeach
-                                    </select>
-                                </th>
-
-                                <th></th>
-
-                                {{-- Actions filtres --}}
-                                <th class="flex gap-1">
-                                    <button type="submit" class="btn btn-xs btn-primary">Appliquer</button>
-
-                                    {{-- Reset logique (ne re-render QUE le tbody) --}}
-                                    <a class="btn btn-xs" hx-get="{{ route('realisation.rows') }}"
-                                        hx-target="#tbody-planning" hx-push-url="true" hx-vals='{"status": ""}'>
-                                        Reset
-                                    </a>
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="tbody-realisation">
-                            @include('realisation.partials.tbody')
-                        </tbody>
-                    </table>
-                </form>
+            <form hx-get="{{ route('realisation.index') }}" hx-trigger="submit" hx-target="#realisation-zone"
+                hx-swap="outerHTML" hx-push-url="true">
+                @include('realisation.partials.table')
+            </form>
+        </div>
+        <div class="card card-dash w-full bg-base-100 border-primary text-neutral-content ">
+            <div class="card-body items-start text-center">
+                <button class="btn btn-primary">Ajouter au BL</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        // helpers
-        const boxes = () => document.querySelectorAll('tbody input[type="checkbox"]:not(:disabled)');
-        const syncAll = () => {
-            const check_all = document.querySelector('#check_all');
-            if (!check_all) return;
-            check_all.checked = [...boxes()].every(cb => cb.checked);
-        };
-        const toggleAll = (checked) => boxes().forEach(cb => cb.checked = checked);
+<script>
+    const boxes = () => document.querySelectorAll('tbody input[type="checkbox"]:not(:disabled)');
+    const syncAll = () => {
+        const check_all = document.querySelector('#check_all');
+        if (!check_all) return;
+        check_all.checked = [...boxes()].every(cb => cb.checked);
+    };
+    const toggleAll = (checked) => boxes().forEach(cb => cb.checked = checked);
 
-        // délégation globale
-        document.addEventListener('change', (e) => {
-            if (e.target.matches('#check_all')) {
-                // clic sur la case master
-                toggleAll(e.target.checked);
-            } else if (e.target.matches('tbody input[type="checkbox"]')) {
-                // clic sur une case enfant
-                syncAll();
-            }
-        });
+    document.addEventListener('change', (e) => {
+        if (e.target.matches('#check_all')) {
+            toggleAll(e.target.checked);
+        } else if (e.target.matches('tbody input[type="checkbox"]')) {
+            syncAll();
+        }
+    });
 
-        // après chaque refresh HTMX → reset le check_all
-        document.addEventListener('htmx:afterSwap', (e) => {
-            const check_all = document.querySelector('#check_all');
-            if (check_all) check_all.checked = false;
-        });
+    document.addEventListener('htmx:afterSwap', (e) => {
+        const check_all = document.querySelector('#check_all');
+        if (check_all) check_all.checked = false;
+    });
 
-        // optionnel, au premier chargement
-        document.addEventListener('DOMContentLoaded', syncAll);
-    </script>
+    document.addEventListener('DOMContentLoaded', syncAll);
+</script>
 @endsection

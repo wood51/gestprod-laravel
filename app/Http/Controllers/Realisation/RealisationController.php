@@ -12,35 +12,33 @@ use Illuminate\Support\Facades\DB;
 class RealisationController extends Controller
 {
     public function index(Request $request)
-    {
-        // On récupère les filtres proprement
-        $reference = $request->string('refs')->trim()->toString();
-        $status = $request->string('status')->trim()->toString();
-        $eng    = $request->string('eng')->trim()->toString();
-        $type   = $request->string('type')->trim()->toString();
+{
+    $reference = $request->string('refs')->trim()->toString();
+    $status    = $request->string('status')->trim()->toString();
+    $eng       = $request->string('eng')->trim()->toString();
+    $type      = $request->string('type')->trim()->toString();
 
-        $eng = "2025-38";
+    $query = VueRealisation::query()
+        ->when($reference !== '', fn($q) => $q->where('reference', $reference))
+        ->when($status    !== '', fn($q) => $q->where('status', $status))
+        ->when($eng       !== '', fn($q) => $q->where('semaine_engagement', 'like', $eng.'%'))
+        ->when($type      !== '', fn($q) => $q->where('type', $type))
+        ->orderByDesc('semaine_engagement')
+        ->orderBy('reference');
 
-        $rows = VueRealisation::query()
-            ->when($reference !== '',fn($q)=> $q->where('reference',$reference))
-            ->when($status !== '', fn($q) => $q->where('status', $status))
-            ->when($eng    !== '', fn($q) => $q->where('semaine_engagement', 'like', $eng . '%'))
-            ->when($type   !== '', fn($q) => $q->where('type', $type))
-            ->orderByDesc('semaine_engagement')
-            ->orderBy('reference')
-            ->when($request->header('HX-Request'), fn($q) => $q->limit(50))
-            ->get();
+    $rows = $query->paginate(14)->withQueryString();
 
-        // Appel HTMX (POST ou GET) → on renvoie juste le fragment <tr>…</tr>
-        if ($request->header('HX-Request')) {
-            return view('realisation.partials.tbody', compact('rows'));
-        }
+    $types    = TypeSousEnsemble::all();
+    $refs     = Article::all();
+    $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
 
-        // Affichage complet (GET normal)
-        $types    = TypeSousEnsemble::all();
-        $refs = Article::all();
-        $statuses = ['Fait', 'Reporté', 'En cours', 'Engagé'];
-
-        return view('realisation.index', compact('rows', 'statuses', 'types', 'refs'));
+    // Si HTMX → on renvoie juste la zone table + pagination
+    if ($request->header('HX-Request')) {
+        return view('realisation.partials.table', compact('rows', 'statuses', 'types', 'refs'));
     }
+
+    // Sinon, la page complète
+    return view('realisation.index', compact('rows', 'statuses', 'types', 'refs'));
+}
+
 }
