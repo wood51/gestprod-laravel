@@ -10,6 +10,8 @@ use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
 use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
+use App\Http\Controllers\SuiviController;
+use App\Http\Controllers\BobinageController;
 
 use App\Http\Controllers\Realisation\RealisationController;
 use App\Models\BonLivraison;
@@ -56,4 +58,13 @@ Route::middleware('auth')->group(function () {
 
     // Test design
     route::get('bl/pdf/{no_bl}', [PdfBonLivraison::class, 'makePdf'])->name('bl.pdf');
+
+    // test suivis
+    Route::get('/suivi/create', [SuiviController::class, 'create'])->name('suivi.create');
+    Route::post('/suivi', [SuiviController::class, 'store'])->name('suivi.store');
+    Route::get('/suivi', [SuiviController::class, 'index'])->name('suivi.index');
+    Route::get('/bobinage', [BobinageController::class, 'index'])->name('bobinage.index');
+    Route::post('/bobinage/{suivi}/start', [BobinageController::class, 'start'])->name('bobinage.start');
+    Route::post('/bobinage/{suivi}/stop', [BobinageController::class, 'stop'])->name('bobinage.stop');
 });
+

@@ -41,9 +41,8 @@
                             <i class="fas fa-home"></i>
                         </a>
 
-                        <a href="#" class="text-gray-500 hover:text-indigo-500 text-xl"
-                        {{-- FIXME --}}
-                            title="{{ ucfirst(Auth::user()->prenom)  }} - Paramètres"> 
+                        <a href="#" class="text-gray-500 hover:text-indigo-500 text-xl" {{-- FIXME --}}
+                            title="{{ ucfirst(Auth::user()->prenom) }} - Paramètres">
                             <i class="fa-solid fa-user"></i>
                         </a>
 
@@ -75,6 +74,9 @@
                             <hr class="border-t border-gray-500 my-2" />
                         </li>
                     @endif
+                    <li>
+                        <a href="{{ route('suivi.create') }}" class="btn btn-ghost">Ajouter un produit</a>
+                    </li>
                 </ul>
             </nav>
         </aside>
