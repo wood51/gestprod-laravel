@@ -10,19 +10,12 @@ class SuiviController extends Controller
 {
     public function index()
     {
+        $articles = Article::with('typeSousEnsemble')->get();
         $suivis = Suivi::with(['article.typeSousEnsemble', 'operator'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('suivi.index', compact('suivis'));
-    }
-
-    public function create()
-    {
-        // Tu peux filtrer les stators ici si tu veux
-        $articles = Article::with('typeSousEnsemble')->get();
-
-        return view('suivi.create', compact('articles'));
+        return view('suivi.index', compact('suivis','articles'));
     }
 
     public function store(Request $request)
@@ -39,6 +32,6 @@ class SuiviController extends Controller
             'etat'           => 'attente',
         ]);
 
-        return back()->with('success', 'Produit ajouté à la file d’attente !');
+        return back()->with('info', 'Produit ajouté à la file d’attente !');
     }
 }

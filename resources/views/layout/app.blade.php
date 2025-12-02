@@ -9,7 +9,7 @@
 </head>
 
 <body class="bg-base-200 dark:bg-gray-800 dark:text-gray-200 font-sans text-gray-800 h-full overflow-auto">
-
+<x-flash />
     <!-- Layout principal -->
     <div class="flex h-full">
 
@@ -75,7 +75,10 @@
                         </li>
                     @endif
                     <li>
-                        <a href="{{ route('suivi.create') }}" class="btn btn-ghost">Ajouter un produit</a>
+                        <a href="{{ route('suivi.index') }}" class="btn btn-ghost">Suivi</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('bobinage.index') }}" class="btn btn-ghost">Bobinage</a>
                     </li>
                 </ul>
             </nav>
