@@ -1,5 +1,5 @@
 <div id="realisation-zone">
-    <table class="table table-sm">
+    <table class="table table-sm select-none">
         <thead class="sticky top-0 z-10">
             {{-- Titres --}}
             <tr class="bg-primary/80 text-primary-content">
@@ -11,13 +11,13 @@
                 <th>Référence</th>
                 <th>Type</th>
                 <th>Numero</th>
-                <th>Semaine</th>
+                {{-- <th>Semaine</th> --}}
                 <th>Engagement</th>
                 <th>PA</th>
                 <th>Poste</th>
                 <th>Status</th>
-                <th>Réalisée</th>
-                <th>Action</th>
+                {{-- <th>Réalisée</th> --}}
+                <th></th>
             </tr>
 
             {{-- Filtres --}}
@@ -44,7 +44,7 @@
                     </select>
                 </th>
                 <th></th>
-                <th></th>
+                {{-- <th></th> --}}
                 <th>
                     <input name="eng" value="{{ request('eng') }}" placeholder="YYYY-WW"
                         class="input input-xs input-bordered w-full" />
@@ -63,20 +63,21 @@
                     </select>
                 </th>
 
-                <th></th>
+                {{-- <th></th> --}}
 
                 <th class="flex gap-1">
-                    <button type="submit" class="btn btn-xs btn-primary">Appliquer</button>
+                    <button type="submit" class="btn btn-xs btn-primary" title="Appliquer"><i class="fas fa-check"></i></button> {{-- Appliquer --}}
 
-                    <a
+                    <button
                         class="btn btn-xs"
                         hx-get="{{ route('realisation.index') }}"
                         hx-target="#realisation-zone"
                         hx-swap="outerHTML"
                         hx-push-url="true"
+                        title="Reset"
                     >
-                        Reset
-                    </a>
+                        <i class="fa-solid fa-xmark"></i> {{-- Reset --}}
+                    </button>
                 </th>
             </tr>
         </thead>

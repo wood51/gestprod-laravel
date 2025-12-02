@@ -17,7 +17,7 @@
         </td>
         <td> {{ $row->type }} </td>
         <td> {{ $row->numero }} </td>
-        <td> {{ $row->semaine }} </td>
+        {{-- <td> {{ $row->semaine }} </td> --}}
         <td> {{ $row->semaine_engagement }} </td>
         <td> {{ $row->no_commande }}</td>
         <td> {{ $row->no_poste }}</td>
@@ -43,7 +43,7 @@
                     <div class="badge badge-outline text-xs">{{ $row->status }}</div>
             @endswitch
         </td>
-        <td> <i class="fas fa-check text-success"></i> </td>
+        {{-- <td> <i class="fas fa-check text-success"></i> </td> --}}
         <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
     </tr>
 @endforeach

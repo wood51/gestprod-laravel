@@ -13,7 +13,7 @@
         </div>
         <div class="card card-dash w-full bg-base-100 border-primary text-neutral-content ">
             <div class="card-body items-start text-center">
-                <button class="btn btn-primary">Ajouter au BL</button>
+                <button class="btn btn-primary" id="btnAddBl">Ajouter au BL</button>
             </div>
         </div>
     </div>
@@ -21,12 +21,27 @@
 
 <script>
     const boxes = () => document.querySelectorAll('tbody input[type="checkbox"]:not(:disabled)');
+    const btnBL = document.querySelector('#btnAddBl');
+
     const syncAll = () => {
         const check_all = document.querySelector('#check_all');
         if (!check_all) return;
         check_all.checked = [...boxes()].every(cb => cb.checked);
+        syncBtn();
     };
-    const toggleAll = (checked) => boxes().forEach(cb => cb.checked = checked);
+
+    const toggleAll = (checked) => {
+        boxes().forEach(cb => cb.checked = checked);
+        syncBtn();
+    };
+
+    const syncBtn = () => {
+        const anyChecked =
+            document.querySelector('#check_all')?.checked ||
+            [...boxes()].some(cb => cb.checked);
+
+        btnBL.disabled = !anyChecked;
+    };
 
     document.addEventListener('change', (e) => {
         if (e.target.matches('#check_all')) {
@@ -36,11 +51,13 @@
         }
     });
 
-    document.addEventListener('htmx:afterSwap', (e) => {
+    document.addEventListener('htmx:afterSwap', () => {
         const check_all = document.querySelector('#check_all');
         if (check_all) check_all.checked = false;
+        syncBtn();
     });
 
     document.addEventListener('DOMContentLoaded', syncAll);
 </script>
+
 @endsection
