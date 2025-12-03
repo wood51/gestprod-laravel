@@ -17,7 +17,7 @@ class BonLivraisonLigne extends Model
     protected function numeroMeta(): Attribute
     {
         return Attribute::make(
-             get: fn ($value): array => (array) (json_decode($this->planning?->numero_meta,true) ?? json_decode($value, true) ?? [])
+             get: fn ($value): array => (array) (json_decode($this->realisation?->numero_meta,true) ?? json_decode($value, true) ?? [])
         );
     }
 
@@ -25,27 +25,27 @@ class BonLivraisonLigne extends Model
     protected function articleRef(): Attribute
     {
         return Attribute::make(
-            get: fn($value): string => (string)  ($this->planning?->article->reference ?? $value )
+            get: fn($value): string => (string)  ($this->realisation?->article->reference ?? $value )
         );
     }
 
     protected function articleDesignation(): Attribute
     {
         return Attribute::make(
-            get: fn($value): string => (string)  ($this->planning?->article->designation ?? $value )
+            get: fn($value): string => (string)  ($this->realisation?->article->designation ?? $value )
         );
     }
 
     protected function noCommande(): Attribute
     {
         return Attribute::make(
-            get: fn($value): string => (string) ($this->planning?->no_commande ?? $value )
+            get: fn($value): string => (string) ($this->realisation?->no_commande ?? $value )
         );
     }
     protected function noPoste(): Attribute
     {
         return Attribute::make(
-            get: fn($value): string => (string) ($this->planning?->no_poste ?? $value )
+            get: fn($value): string => (string) ($this->realisation?->no_poste ?? $value )
         );
     }
 }

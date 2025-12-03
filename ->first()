@@ -1,0 +1,43 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#7045
+    [34mall[39m: [
+      [34;4mApp\Models\BonLivraisonLigne[39;24m {#7040
+        [34mid[39m: [35m1[39m,
+        [34mbon_livraison_id[39m: [35m17[39m,
+        [34mrealisation_id[39m: [35m691[39m,
+        [34mnumero_meta[39m: """
+          [32m{[39m\r\n
+          [32m   "Alternateur n°":"163",[39m\r\n
+          [32m   "Rotor n°":"6744",[39m\r\n
+          [32m   "Stator n°":"6816"[39m\r\n
+          [32m}[39m
+          """,
+        [34marticle_ref[39m: "[32mAB250M150V2[39m",
+        [34marticle_designation[39m: "[32mTODO Renseigné tt les designation[39m",
+        [34mquantite[39m: [35m1[39m,
+        [34mno_commande[39m: "[32mPA065612[39m",
+        [34mno_poste[39m: "[32m2[39m",
+        [34mcreated_at[39m: [36mnull[39m,
+        [34mupdated_at[39m: "[32m2025-12-03 15:26:53[39m",
+      },
+      [34;4mApp\Models\BonLivraisonLigne[39;24m {#7043
+        [34mid[39m: [35m2[39m,
+        [34mbon_livraison_id[39m: [35m17[39m,
+        [34mrealisation_id[39m: [35m692[39m,
+        [34mnumero_meta[39m: """
+          [32m{[39m\r\n
+          [32m   "Alternateur n°":"164",[39m\r\n
+          [32m   "Rotor n°":"6700",[39m\r\n
+          [32m   "Stator n°":"6809"[39m\r\n
+          [32m}[39m
+          """,
+        [34marticle_ref[39m: "[32mAB250M150V2[39m",
+        [34marticle_designation[39m: "[32mTODO Renseigné tt les designation[39m",
+        [34mquantite[39m: [35m1[39m,
+        [34mno_commande[39m: "[32mPA065612[39m",
+        [34mno_poste[39m: "[32m3[39m",
+        [34mcreated_at[39m: [36mnull[39m,
+        [34mupdated_at[39m: "[32m2025-12-03 15:26:53[39m",
+      },
+    ],
+  }
+

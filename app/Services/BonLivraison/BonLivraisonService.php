@@ -44,15 +44,12 @@ class BonLivraisonService
             $bl->save();
 
             foreach ($lignes as $l) {
-                $l->numero_meta = $l->planning->numero_meta;
-                $l->article_ref = $l->planning->article->reference;
-                $l->article_designation = $l->planning->article->designation;
+                $l->numero_meta = $l->realisation->numero_meta;
+                $l->article_ref = $l->realisation->article->reference;
+                $l->article_designation = $l->realisation->article->designation;
                 $l->quantite = 1;
-                $l->no_commande = $l->planning->no_commande;
-                $l->no_poste = $l->planning->no_poste;
-
-                // on supprimme le liens du planning 
-                $l->planning_id = null;
+                $l->no_commande = $l->realisation->no_commande;
+                $l->no_poste = $l->realisation->no_poste;
                 $l->save();
             }
         });
@@ -76,6 +73,4 @@ class BonLivraisonService
         return;
     }
 
-    // Helper 
-    
 }
