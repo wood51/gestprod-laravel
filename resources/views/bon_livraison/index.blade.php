@@ -60,7 +60,7 @@
                                     {{ $r->commentaire_bl }}
                                 </td>
                                 <td>
-                                    <div class="flex justify-center items-center gap-4">
+                                    <div class="flex justify-center items-center gap-2">
 
                                         {{-- Visualisation --}}
                                         <form action="{{ route('bl.show', $r->id) }}" method="get">
