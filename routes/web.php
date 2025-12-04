@@ -10,7 +10,7 @@ use App\Http\Controllers\Kpi\Engagement;
 use App\Http\Controllers\Kpi\Dashboard;
 use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
-
+use App\Http\Controllers\PageGarde;
 use App\Http\Controllers\Realisation\RealisationController;
 use App\Models\BonLivraison;
 
@@ -20,9 +20,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [HomeController::class, 'showHome'])->name('home');
-
-
+Route::get('/', [HomeController::class, 'showHome'])->name('home');
 
     // Dashboard KPI
     Route::get('/kpi/dashboard', [Dashboard::class, 'showDashboard'])->name('dashboard');
@@ -57,5 +55,6 @@ Route::middleware('auth')->group(function () {
     route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
 
     // Test design
+    route::get('/garde/{no_bl}', [PageGarde::class, 'generatePageGarde'])->name('garde.pdf');
     route::get('bl/pdf/{no_bl}', [PdfBonLivraison::class, 'makePdf'])->name('bl.pdf');
 });

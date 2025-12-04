@@ -8,8 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BonLivraison extends Model
 {
-    protected $fillable = ['validated_at', 'canceled_at', 'created_by', 'validated_by', 'canceled_by'];
-
+     protected $fillable = [
+        'type_sous_ensemble_id',
+        'state',
+        'validated_at',
+        'canceled_at',
+        'created_by',
+        'validated_by',
+        'canceled_by',
+        'nb_lines',
+        'commentaire_interne',
+        'commentaire_bl',
+    ];
     protected $with = [
         'createdBy:id,nom,prenom,username',
         'validatedBy:id,nom,prenom,username',

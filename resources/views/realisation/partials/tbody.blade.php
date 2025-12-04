@@ -2,7 +2,7 @@
     <tr class="hover:bg-base-300" id="planning_{{ $row->id }}">
         <th>
             <label for="check_{{ $row->id }}">
-                @if ($row->no_commande === null && $row->semaine_engagement !== 'Fait')
+                @if (($row->no_commande === null && $row->semaine_engagement !== 'Fait') || $row->bl !== null)
                     <input type="checkbox" name="realisationIds[]" id="check_{{ $row->id }}" disabled />
                 @else
                     <input type="checkbox" name="realisationIds[]" id="check_{{ $row->id }}"  value="{{ $row->id }}" />
@@ -44,6 +44,7 @@
             @endswitch
         </td>
         {{-- <td> <i class="fas fa-check text-success"></i> </td> --}}
-        <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
+        {{-- <td><i class="fa-solid fa-ellipsis-vertical"></i></td> --}}
+        <td>{{ $row->bl }}</td>
     </tr>
 @endforeach

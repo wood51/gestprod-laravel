@@ -18,6 +18,7 @@
                         <tr class="bg-blue-200">
                             <th>N°</th>
                             <th>Status</th>
+                            <th>Type</th>
                             <th>Création</th>
                             <th>Validation</th>
                             <th>Annulation</th>
@@ -39,6 +40,7 @@
                                         <div class="badge badge-outline badge-error text-sm">annulé</div>
                                     @endif
                                 </td>
+                                <td>{{ $r->typeSousEnsemble->designation }}</td>
                                 <td>{{ strtoupper($r->createdBy?->username) }}
                                     <span
                                         class="font-normal">{{ $r->created_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
@@ -78,6 +80,24 @@
                                                 class="btn btn-ghost text-sm {{ $r->state != 'canceled' ? 'text-error' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Supprimer/Annuler">
                                                 <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </form>
+
+                                        {{--Pdf --}}
+                                        <form action="{{ route('bl.pdf', $r->id) }}" method="get">
+                                            <button type="submit"
+                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
+                                                title="Imprimer">
+                                                <i class="fa-solid fa-print"></i>
+                                            </button>
+                                        </form>
+
+                                        {{-- Page Garde --}} 
+                                        <form action="{{ route('garde.pdf', $r->id) }}" method="get">
+                                            <button type="submit"
+                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
+                                                title="Page garde">
+                                                <i class="fa-regular fa-file-lines"></i></i>
                                             </button>
                                         </form>
                                     </div>

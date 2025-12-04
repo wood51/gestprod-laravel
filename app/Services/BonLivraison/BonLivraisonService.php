@@ -97,7 +97,7 @@ class BonLivraisonService
             $bl = BonLivraison::where('state', 'draft')
                 ->where('type_sous_ensemble_id', $typeId)
                 ->first();
-
+               
             if (! $bl) {
                 $bl = BonLivraison::create([
                     'type_sous_ensemble_id' => $typeId,
@@ -120,13 +120,6 @@ class BonLivraisonService
                 BonLivraisonLigne::create([
                     'bon_livraison_id'      => $bl->id,
                     'realisation_id'        => $real->id,
-                    // soit tu figes maintenant :
-                    // 'numero_meta'           => $real->numero_meta,
-                    // 'article_ref'           => $real->article->reference,
-                    // 'article_designation'   => $real->article->designation,
-                    // 'quantite'              => 1,
-                    // 'no_commande'           => $real->no_commande,
-                    // 'no_poste'              => $real->no_poste,
                 ]);
             }
 

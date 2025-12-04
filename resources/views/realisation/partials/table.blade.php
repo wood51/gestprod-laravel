@@ -17,7 +17,7 @@
                 <th>Poste</th>
                 <th>Status</th>
                 {{-- <th>Réalisée</th> --}}
-                <th></th>
+                <th>BL</th>
             </tr>
 
             {{-- Filtres --}}

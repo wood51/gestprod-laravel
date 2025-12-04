@@ -31,16 +31,16 @@ class PdfBonLivraison
 
         // Logo
         $pdf->Image(public_path('img/logo_DEE.png'), 10, 10, 45);
-        $pdf->SetY(15);
+        $pdf->SetY(12);
 
         $title = view('bon_livraison.partials.pdfTitle', compact('bl'))->render();
         $pdf->writeHTML($title, true, false, true, false);
-        $pdf->ln(18);
+        $pdf->ln(13);
 
         $pdf->SetFont('times', '', 10);
         $adresse = view('bon_livraison.partials.pdfAdresseTable')->render();
         $pdf->writeHTML($adresse, true, false, true, false);
-        $pdf->ln(8);
+        $pdf->ln(7);
 
         $transport = view('bon_livraison.partials.pdfTransport')->render();
         $pdf->writeHTML($transport, true, false, true, false);
@@ -52,17 +52,17 @@ class PdfBonLivraison
 
         $observation = view('bon_livraison.partials.pdf'.$type.'Observation', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($observation, true, false, true, false);
-        $pdf->ln(2);
+        // $pdf->ln(2);
 
         $signature = view('bon_livraison.partials.pdfSignature', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($signature, true, false, true, false);
 
         // Annulé
         // TODO image annulé insérer en conditionnel 
-        $pdf->StartTransform();
-        $pdf->Rotate(20, 50, 138);
-        $pdf->Image(public_path('img/annulé.png'), 0, 138.5, 175);
-        $pdf->StopTransform();
+        // $pdf->StartTransform();
+        // $pdf->Rotate(20, 50, 138);
+        // $pdf->Image(public_path('img/annulé.png'), 0, 138.5, 175);
+        // $pdf->StopTransform();
 
         $pdf->Output("BL_{$no_bl}.pdf", 'I');   // 'I' pour afficher, 'D' pour télécharger
 
