@@ -3,15 +3,15 @@
         <th>
             <label for="check_{{ $row->id }}">
                 @if ($row->no_commande === null && $row->semaine_engagement !== 'Fait')
-                    <input type="checkbox" id="check_{{ $row->id }}" disabled />
+                    <input type="checkbox" name="realisationIds[]" id="check_{{ $row->id }}" disabled />
                 @else
-                    <input type="checkbox" id="check_{{ $row->id }}" />
+                    <input type="checkbox" name="realisationIds[]" id="check_{{ $row->id }}"  value="{{ $row->id }}" />
                 @endif
             </label>
         </th>
         <td>
             <div class="flex items-center justify-start gap-2 h-full">
-                <span style="background-color:  {{ $row->reference_couleur }} " class="w-4 h-6 rounded-sm"></span>
+                <span style="background-color:  {{ $row->reference_couleur }}" class="w-4 h-6 rounded-sm"></span>
                 <span>{{ $row->reference }}</span>
             </div>
         </td>

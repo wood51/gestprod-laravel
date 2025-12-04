@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
     // Planning
     Route::get('/realisation', [RealisationController::class, 'index'])->name('realisation.index');
     Route::get('/realisation/rows', [RealisationController::class, 'rows'])->name('realisation.rows');
+    Route::post('/realisations/add-to-bl', [BonLivraisons::class, 'addRealisationsToBl'])
+    ->name('realisations.addToBl');
 
     // Bon de livraisons
     route::get('bl', [BonLivraisons::class, 'index'])->name('bl.index');
