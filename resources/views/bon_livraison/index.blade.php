@@ -60,7 +60,7 @@
                                     {{ $r->commentaire_bl }}
                                 </td>
                                 <td>
-                                    <div class="flex justify-center items-center gap-2">
+                                    <div class="flex justify-center items-center">
 
                                         {{-- Visualisation --}}
                                         <form action="{{ route('bl.show', $r->id) }}" method="get">
@@ -95,7 +95,7 @@
                                         {{-- Page Garde --}} 
                                         <form action="{{ route('garde.pdf', $r->id) }}" method="get">
                                             <button type="submit"
-                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
+                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' && $r->typeSousEnsemble->designation === 'Alternateur' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Page garde">
                                                 <i class="fa-regular fa-file-lines"></i></i>
                                             </button>
