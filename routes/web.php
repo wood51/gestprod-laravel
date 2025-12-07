@@ -12,6 +12,8 @@ use App\Http\Controllers\Kpi\Qualite;
 use App\Http\Controllers\Kpi\Rendement;
 use App\Http\Controllers\PageGarde;
 use App\Http\Controllers\Realisation\RealisationController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\PdpController;
 use App\Models\BonLivraison;
 
 // use App\Http\Controllers\TempsProduction;
@@ -57,4 +59,11 @@ Route::get('/', [HomeController::class, 'showHome'])->name('home');
     // Test design
     route::get('/garde/{no_bl}', [PageGarde::class, 'generatePageGarde'])->name('garde.pdf');
     route::get('bl/pdf/{no_bl}', [PdfBonLivraison::class, 'makePdf'])->name('bl.pdf');
+
+    // Route::resource('commandes', CommandeController::class)
+    // ->only(['index', 'show']);
+
+    route::get('/commandes',[CommandeController::class,'index'])->name('commandes.index');
+    route::get('/commandes/{commande}',[CommandeController::class,'show'])->name('commandes.show');
+    route::get('/pdp',[PdpController::class,'index'])->name('pdp.index');
 });

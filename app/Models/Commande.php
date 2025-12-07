@@ -12,4 +12,12 @@ class Commande extends Model
         'date_commande',
         'status',
     ];
+
+    protected $casts = [
+        'date_commande' => 'datetime',
+    ];
+
+    public function lignes() {
+        return $this->hasMany(CommandeLigne::class);
+    }
 }

@@ -69,3 +69,11 @@ select:focus[data-flux-control] {
 /* \[:where(&)\]:size-4 {
     @apply size-4;
 } */
+
+.no-marker::-webkit-details-marker {
+    display: none;
+}
+
+.no-marker::marker {
+    display: none;
+}

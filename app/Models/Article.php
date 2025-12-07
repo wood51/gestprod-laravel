@@ -21,5 +21,9 @@ class Article extends Model
         return $this->hasMany(Realisation::class);
     }
 
+    public function commande_lignes() {
+        return $this->hasMany(CommandeLigne::class);
+    }
+
 
 }
