@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class ImportLegacyPlanningSeeder extends Seeder
+class ImportLegacyTypeEnsembleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,26 +15,19 @@ class ImportLegacyPlanningSeeder extends Seeder
     public function run(): void
     {
         $old_planning = DB::connection('mysql_old')
-        ->table('prod_planning')
+        ->table('prod_type_ensemble')
         ->get();
 
         Schema::disableForeignKeyConstraints();
         
-        DB::table('realisations')->truncate();
+        DB::table('type_ensembles')->truncate();
 
         foreach($old_planning as $r) {
-            DB::table('realisations')->insert([
+            DB::table('type_ensembles')->insert([
                 'id' => $r->id,
-                'article_id' => $r->fk_article,
                 'type_sous_ensemble_id' => $r->fk_type_sous_ensemble,
-                'numero' => $r->numero,
-                'numero_meta' => null,
-                'no_commande' => null,
-                'no_poste' => null,
-                'semaine' => $r->semaine,
-                'engagement' => $r->engagement,
-                'commentaire' =>$r->commentaire,
-                'prete' =>$r->prete,
+                'libelle' => $r->libelle,
+                'ordre_affichage' =>$r->ordre_affichage,
             ]);
         }
         Schema::enableForeignKeyConstraints();

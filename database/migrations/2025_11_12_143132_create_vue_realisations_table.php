@@ -39,12 +39,12 @@ return new class extends Migration
                 SELECT e1.*
                 FROM engagements e1
              JOIN (
-                SELECT planning_id, MAX(updated_at) AS max_updated
+                SELECT realisation_id, MAX(updated_at) AS max_updated
                 FROM engagements
-                GROUP BY planning_id
-                ) last ON last.planning_id = e1.planning_id
+                GROUP BY realisation_id
+                ) last ON last.realisation_id = e1.realisation_id
                 AND last.max_updated = e1.updated_at
-            ) pe ON pe.planning_id = pp.id;
+            ) pe ON pe.realisation_id = pp.id;
         ");
     }
 

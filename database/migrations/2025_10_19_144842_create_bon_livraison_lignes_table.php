@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bon_livraison_lignes', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->foreignId('bon_livraison_id')->constrained('bon_livraisons');
 
-// Création des FK nullable a part car pb Mariadb mode strict
-            $table->unsignedBigInteger('realisation_id')->nullable();  
+            // Création des FK nullable a part car pb Mariadb mode strict
+            $table->unsignedBigInteger('realisation_id')->nullable();
             $table->foreign('realisation_id')->references('id')->on('realisations');
 
             $table->json('numero_meta')->nullable(); // numero_meta figer pour les collone du bl (je farais l'extraction direct)

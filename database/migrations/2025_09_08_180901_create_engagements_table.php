@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('engagements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('planning_id')->constrained('plannings');
+            $table->foreignId('realisation_id')->constrained('realisations');
             $table->string('semaine_engagee', 7)->nullable();
             $table->enum('status', ['prévisionnel', 'engagé', 'reporté', 'annulé', 'en cours', 'fait', 'retour client'])->default('prévisionnel');
             $table->string('commentaire')->nullable();
