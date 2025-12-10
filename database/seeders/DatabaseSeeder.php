@@ -23,7 +23,10 @@ class DatabaseSeeder extends Seeder
             ImportLegacyEngagementsSeeder::class,
             ImportLegacyEtatsSeeder::class,
             ImportLegacyPlanningSeeder::class,
-            ImportLegacyTypeEnsembleSeeder::class
+            ImportLegacyTypeEnsembleSeeder::class,
+            ImportLegacyTypeSousEnsembleSeeder::class,
+            ImportLegacyCatalogueDefautSeeder::class,
+            ImportLegacyControleProduitSeeder::class
         ]);
     }
 }

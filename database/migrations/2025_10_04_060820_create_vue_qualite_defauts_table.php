@@ -26,7 +26,7 @@ return new class extends Migration
 	        join `catalogue_defauts` `cd` on
 		        `qd`.`catalogue_defaut_id` = `cd`.`id`
 	        join `gravite_defauts` `gd` on
-		        `cd`.`gravite_id` = `gd`.`id`
+		        `cd`.`gravite_defaut_id` = `gd`.`id`
 	        where
 		        `qd`.`controle_produit_id` = `cp`.`id`
 	        order by

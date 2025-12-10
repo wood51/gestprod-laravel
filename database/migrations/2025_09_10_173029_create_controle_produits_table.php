@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('controle_produits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('planning_id')->constrained('plannings');
+            $table->foreignId('realisation_id')->constrained('realisations');
             $table->foreignId('etat_id')->constrained('etats');
-            $table->boolean('hasDefault')->default(0);
+            $table->boolean('hasDefaut')->default(0);
             $table->string('commentaire')->nullable();
             $table->timestamps();
         });

@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class ImportLegacyEngagementsSeeder extends Seeder
+class ImportLegacyCatalogueDefautSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,21 @@ class ImportLegacyEngagementsSeeder extends Seeder
     public function run(): void
     {
         $oldDB = DB::connection('mysql_old')
-            ->table('prod_engagement')
+            ->table('qualite_catalogue_defauts')
             ->get();
 
         Schema::disableForeignKeyConstraints();
 
-        DB::table('engagements')->truncate();
+        DB::table('catalogue_defauts')->truncate();
 
         foreach ($oldDB as $r) {
-            DB::table('engagements')->insert([
+            DB::table('catalogue_defauts')->insert([
                 'id'=>$r->id,
-                'realisation_id'=>$r->fk_planning,
-                'semaine_engagee'=>$r->semaine_engagee,
-                'status'=>$r->status,
-                'commentaire'=>$r->commentaire,
-                'created_at'=>$r->modified_at,
-                'updated_at'=>$r->modified_at
+                'mot_cle'=>$r->mot_cle,
+                'type_sous_ensemble_id'=>$r->fk_type_sous_ensemble,
+                'categorie_defaut'=>$r->fk_categorie_defaut===1 ? "Electrique":"Mécanique",
+                'gravite_defaut_id'=>$r->fk_gravite,
+                'description'=>$r->description
             ]);
         }
 

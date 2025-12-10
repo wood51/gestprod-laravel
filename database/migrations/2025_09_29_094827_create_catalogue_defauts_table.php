@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('mot_cle');
             $table->foreignId('type_sous_ensemble_id')->constrained('type_sous_ensembles');
             $table->enum('categorie_defaut',['Electrique','Mécanique']);
-            $table->foreignId('gravite_id')->constrained('gravite_defauts');
+            $table->foreignId('gravite_defaut_id')->constrained('gravite_defauts');
             $table->string('description')->nullable();
             $table->timestamps();
         });
