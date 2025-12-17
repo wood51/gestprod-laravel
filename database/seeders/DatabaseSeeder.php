@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             ImportLegacyTypeEnsembleSeeder::class,
             ImportLegacyTypeSousEnsembleSeeder::class,
             ImportLegacyCatalogueDefautSeeder::class,
-            ImportLegacyControleProduitSeeder::class
+            ImportLegacyControleProduitSeeder::class,
+            ImportLegacyGraviteDefautSeeder::class,
+            ImportLegacyDefautSeeder::class
         ]);
     }
 }
