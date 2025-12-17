@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Bonlivraison;
+namespace App\Services\BonLivraison;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
