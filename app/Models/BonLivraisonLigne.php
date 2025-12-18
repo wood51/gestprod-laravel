@@ -16,6 +16,7 @@ class BonLivraisonLigne extends Model
         'quantite',
         'no_commande',
         'no_poste',
+        'code_prefix'
     ];
 
     public function realisation()

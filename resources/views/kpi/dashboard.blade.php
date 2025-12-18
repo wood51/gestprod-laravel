@@ -75,7 +75,7 @@
             </div>
             <!-- Slide 3 -->
             <div id="slide3" class="carousel-item relative w-full h-full">
-                @include('kpi.partials.performance-qualite');
+                @include('kpi.partials.performance-qualite')
             </div>
         </div>
     </main>

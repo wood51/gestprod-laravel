@@ -24,7 +24,8 @@ class RealisationController extends Controller
         ->when($eng       !== '', fn($q) => $q->where('semaine_engagement', 'like', $eng.'%'))
         ->when($type      !== '', fn($q) => $q->where('type', $type))
         ->orderByDesc('semaine_engagement')
-        ->orderBy('reference');
+        ->orderBy('reference')
+        ->orderBy('id');
 
     $rows = $query->paginate(14)->withQueryString();
 
