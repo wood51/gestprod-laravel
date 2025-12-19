@@ -55,6 +55,10 @@ class Realisation extends Model
         );
     }
 
+    public function map() {
+        return $this->belongsTo(v10_pa_map::class);
+    }
+
     // Accessor num_bl "virtuel"
     protected function numBl(): Attribute
     {
