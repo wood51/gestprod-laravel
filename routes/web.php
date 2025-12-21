@@ -13,6 +13,7 @@ use App\Http\Controllers\Kpi\Rendement;
 use App\Http\Controllers\PageGarde;
 use App\Http\Controllers\Realisation\RealisationController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\CommandeImportController;
 use App\Http\Controllers\PdpController;
 use App\Models\BonLivraison;
 
@@ -39,6 +40,10 @@ Route::get('kpi/qualite/{week}', [Qualite::class, 'renderQualite']);
 
 Route::get('kpi/api/qualite-mois/{week}/{nb_week}', [Qualite::class, 'jsonQualiteMois']);
 Route::get('kpi/qualite-mois/{week}/{nb_week}', [Qualite::class, 'renderQualiteMois']);
+
+
+Route::get('/pa/import', [CommandeImportController::class, 'create']);
+Route::post('/pa/import', [CommandeImportController::class, 'store']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'showHome'])->name('home');

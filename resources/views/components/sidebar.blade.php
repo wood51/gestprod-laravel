@@ -11,7 +11,6 @@
                     'icon' => 'fa-solid fa-chart-line',
                     'target' => '_blank',
                 ],
-                
             ],
         ],
     ];
@@ -20,36 +19,42 @@
     $adminSection = [
         'title' => 'Admin',
         'items' => [
-           [
-                    'label' => 'Commandes',
-                    'href' => url('/commandes'),
-                    'pattern' => 'commandes*',
-                    'icon' => 'fa-solid fa-list',
-                ],
-                [
-                    'label' => 'Planning',
-                    'href' => url('/planning'),
-                    'pattern' => 'planning*',
-                    'icon' => 'fa-regular fa-calendar',
-                ],
-                [
-                    'label' => 'Engagements',
-                    'href' => url('/engagements'),
-                    'pattern' => 'engagements*',
-                    'icon' => 'fa-solid fa-handshake',
-                ],
-                [
-                    'label' => 'Réalisations',
-                    'href' => url('/realisation'),
-                    'pattern' => 'realisation*',
-                    'icon' => 'fa-solid fa-check-double',
-                ],
-                [
-                    'label' => 'Bons de livraison',
-                    'href' => url('/bl'),
-                    'pattern' => 'bl*',
-                    'icon' => 'fa-solid fa-truck-ramp-box',
-                ],
+            [
+                'label' => 'Commandes',
+                'href' => url('/commandes'),
+                'pattern' => 'commandes*',
+                'icon' => 'fa-solid fa-list',
+            ],
+            [
+                'label' => 'Parse Cmde Test',
+                'href' => url('/pa/import'),
+                'pattern' => 'parse*',
+                'icon' => 'fa-solid fa-list',
+            ],
+            [
+                'label' => 'Planning',
+                'href' => url('/planning'),
+                'pattern' => 'planning*',
+                'icon' => 'fa-regular fa-calendar',
+            ],
+            [
+                'label' => 'Engagements',
+                'href' => url('/engagements'),
+                'pattern' => 'engagements*',
+                'icon' => 'fa-solid fa-handshake',
+            ],
+            [
+                'label' => 'Réalisations',
+                'href' => url('/realisation'),
+                'pattern' => 'realisation*',
+                'icon' => 'fa-solid fa-check-double',
+            ],
+            [
+                'label' => 'Bons de livraison',
+                'href' => url('/bl'),
+                'pattern' => 'bl*',
+                'icon' => 'fa-solid fa-truck-ramp-box',
+            ],
         ],
     ];
 @endphp
@@ -65,7 +70,7 @@
             Gestion de production DEE
         </span>
         {{-- <div id="clock" class="font-mono font-bold text-[11px] text-gray-400 mt-2">&nbsp;</div> --}}
-        <x-clock class="font-mono font-bold text-[11px] text-gray-400 mt-2"/>
+        <x-clock class="font-mono font-bold text-[11px] text-gray-400 mt-2" />
     </div>
 
     {{-- Bandeau icônes haut --}}
