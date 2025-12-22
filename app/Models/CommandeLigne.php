@@ -12,6 +12,7 @@ class CommandeLigne extends Model
     protected $fillable = [
         'commande_id',
         'article_id',
+        'code_article',
         'type_sous_ensemble_id',
         'poste_client',
         'qte_commandee',
