@@ -24,6 +24,11 @@ ROW_RE = re.compile(
 )
 
 
+class ManualParseRequired(Exception):
+    """PDF non parseable automatiquement (format hors standard)."""
+
+    pass
+
 # =========================
 # Clipboard (Windows)
 # =========================
@@ -151,9 +156,7 @@ def explode_quantites(lignes: list[dict]) -> list[dict]:
 
 
 
-def parse_pdf(
-    pdf_path: Path, code_map: dict | None = None, debug: bool = False
-) -> dict:
+def parse_pdf(pdf_path: Path, code_map: dict | None = None, debug: bool = False) -> dict:
     if code_map is None:
         code_map = {}
 
@@ -217,6 +220,19 @@ def parse_pdf(
 
     return result
 
+def validate_parse(result: dict) -> None:
+    if not result["lignes"]:
+        raise ManualParseRequired("aucune ligne détectée")
+
+    for i, row in enumerate(result["lignes"], start=1):
+        if not row.get("poste"):
+            raise ManualParseRequired(f"poste manquant (ligne {i})")
+        if not row.get("code_article"):
+            raise ManualParseRequired(f"code_article manquant (ligne {i})")
+        if not row.get("date_livraison"):
+            raise ManualParseRequired(f"date_livraison manquante (ligne {i})")
+        if not row.get("quantite"):
+            raise ManualParseRequired(f"quantite manquante (ligne {i})")
 
 # =========================
 # Optional file outputs
@@ -293,7 +309,12 @@ if __name__ == "__main__":
 
     code_map = load_code_map(Path(args.code_map))
 
-    data = parse_pdf(pdf_path, code_map=code_map, debug=args.debug)
+    try:
+        data = parse_pdf(pdf_path, code_map=code_map, debug=args.debug)
+        validate_parse(data)
+    except ManualParseRequired as e:
+        print(f"[MANUAL] {pdf_path.name} → {e}")
+        raise SystemExit(2)
 
     # Mode Laravel : JSON direct
     if args.json_stdout:
