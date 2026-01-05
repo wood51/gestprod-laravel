@@ -9,7 +9,15 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['reference','designation', 'type_sous_ensemble_id', 'couleur', 'coefficient', 'commentaire'];
+    protected $fillable = [
+        'reference',
+        'designation',
+        'type_sous_ensemble_id',
+        'couleur',
+        'coefficient',
+        'commentaire',
+        'ref_client'
+    ];
 
     public function typeSousEnsemble()
     {
@@ -21,9 +29,8 @@ class Article extends Model
         return $this->hasMany(Realisation::class);
     }
 
-    public function commande_lignes() {
+    public function commande_lignes()
+    {
         return $this->hasMany(CommandeLigne::class);
     }
-
-
 }

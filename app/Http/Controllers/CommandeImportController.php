@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\CommandeLigne;
 use App\Models\Commande;
+use App\Models\Article;
 
 class CommandeImportController extends Controller
 {
@@ -40,7 +41,10 @@ class CommandeImportController extends Controller
         $process->run();
 
         if (! $process->isSuccessful()) {
-            // dd($process->getErrorOutput(), $process->getOutput());
+            if($process->getExitCode() == 2) {
+                
+            }
+            dd($process->getErrorOutput(), $process->getOutput());
             throw new ProcessFailedException($process);
         }
 
@@ -52,35 +56,38 @@ class CommandeImportController extends Controller
         }
 
 
-        // 5) Créaton de la commande 
-        $commande = Commande::create([
-            'acheteur' => $data['acheteur'],
-            'source_file' => $data['source_file'],
-            'file_hash'=> md5_file($pdf),
-            'date_commande' =>Carbon::createFromFormat('d/m/Y', $data['date_commande']),
-            'pa' => $data['pa'],
-            'is_avenant' => $data['is_avenant']
-        ]);
-
         // 6) Création des lignes
-        DB::transaction(function() use ($commande,$data) {
-            if($commande->id) {
-                foreach($data['lignes'] as $l) {
-                    //dump($l);
-                    CommandeLigne::create([
-                        'commande_id'=> $commande->id,
-                        'poste_client' => $l['poste'],
-                        'article_id' => 1,
-                        'code_article' => $l['code_article'],
-                        'date_client' => Carbon::createFromFormat('d/m/Y',$l['date_livraison'] ),
-                        'qte_commandee'=> $l['quantite'],
-                        'type_sous_ensemble_id' => 1
+        $commandeId = DB::transaction(function () use ($data, $pdf) {
+            $commande = Commande::create([
+                'acheteur' => $data['acheteur'],
+                'source_file' => $data['source_file'],
+                'file_hash' => md5_file($pdf),
+                'date_commande' => Carbon::createFromFormat('d/m/Y', $data['date_commande']),
+                'pa' => $data['pa'],
+                'is_avenant' => $data['is_avenant']
+            ]);
 
-                    ]);
-                }
+
+            foreach ($data['lignes'] as $l) {
+                $article = Article::where('ref_client', '=', $l['code_article'])->first();
+
+                CommandeLigne::create([
+                    'commande_id' => $commande->id,
+                    'poste_client' => $l['poste'],
+                    'article_id' => $article?->id,
+                    'code_article' => $l['code_article'],
+                    'date_client' => Carbon::createFromFormat('d/m/Y', $l['date_livraison']),
+                    'qte_commandee' => $l['quantite'],
+                    'type_sous_ensemble_id' => $article->type_sous_ensemble_id
+
+                ]);
             }
+
+            return $commande->id;
         });
 
-        return back()->with("status", "OK, fichier parser commande : $commande->id");
+        return redirect()
+            ->route('commandes.show', $commandeId)
+            ->with('status', "Import OK : commande #$commandeId");
     }
 }
