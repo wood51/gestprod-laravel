@@ -41,14 +41,15 @@ class CommandeImportController extends Controller
         $process->run();
 
         if (! $process->isSuccessful()) {
-            if($process->getExitCode() == 2) {
-                
+            if ($process->getExitCode() == 2) {
+                dd($process->getErrorOutput(), $process->getOutput());
+                throw new ProcessFailedException($process);
             }
-            dd($process->getErrorOutput(), $process->getOutput());
-            throw new ProcessFailedException($process);
         }
 
         $data = json_decode($process->getOutput(), true);
+
+        // dd($data);
 
         // 4) Validation minimum
         if (!is_array($data) || empty($data['pa']) || !isset($data['lignes'])) {
@@ -71,6 +72,19 @@ class CommandeImportController extends Controller
             foreach ($data['lignes'] as $l) {
                 $article = Article::where('ref_client', '=', $l['code_article'])->first();
 
+                if (!$article) {
+                    // logger()->warning("Article manquant", ['code_article' => $l['code_article'], 'poste' => $l['poste']]);
+                    if (!$article) {
+                        dd([
+                            'code_article' => $l['code_article'],
+                            'poste' => $l['poste'],
+                            'ligne_json' => $l,
+                            'articles_count_same_ref_client' => Article::where('ref_client', $l['code_article'])->count(),
+                        ]);
+                    }
+                }
+
+
                 CommandeLigne::create([
                     'commande_id' => $commande->id,
                     'poste_client' => $l['poste'],
@@ -78,7 +92,7 @@ class CommandeImportController extends Controller
                     'code_article' => $l['code_article'],
                     'date_client' => Carbon::createFromFormat('d/m/Y', $l['date_livraison']),
                     'qte_commandee' => $l['quantite'],
-                    'type_sous_ensemble_id' => $article->type_sous_ensemble_id
+                    'type_sous_ensemble_id' => $article?->type_sous_ensemble_id
 
                 ]);
             }

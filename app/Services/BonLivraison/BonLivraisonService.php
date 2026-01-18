@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\BonLivraison;
 use App\Models\BonLivraisonLigne;
 use App\Models\Realisation;
+use App\Models\Commande;
+use App\Models\CommandeLigne;
 
 
 class BonLivraisonService
@@ -108,6 +110,48 @@ class BonLivraisonService
 
             foreach ($reals as $real) {
 
+                // 0) Si pas encore affecté à une commande/poste → FIFO
+                /** @var \App\Models\CommandeLigne|null $ligne */
+                if (empty($real->no_commande) || empty($real->no_poste)) {
+
+                    $ligne = CommandeLigne::query()
+                        ->where('article_id', $real->article_id)
+                        ->whereColumn('qte_livree', '<', 'qte_commandee')
+                        //->join('commandes', 'commande_lignes.commande_id', '=', 'commandes.id')
+                        ->orderBy('commandes.date_commande', 'asc')
+                        // ->orderBy('commande_lignes.poste_client', 'asc')
+                        ->orderByRaw("
+                CAST(SUBSTRING_INDEX(poste_client, '.', 1) AS UNSIGNED) ASC,
+                COALESCE(
+                    CAST(NULLIF(SUBSTRING_INDEX(poste_client, '.', -1), poste_client) AS UNSIGNED),
+                    0
+                ) ASC
+            ")
+                        ->select('commande_lignes.*', 'commandes.pa as commande_pa')
+                        ->lockForUpdate()
+                        ->first();
+                    
+                    if (!$ligne) {
+                        abort(400, "Aucune ligne de commande ouverte pour l’article {$real->article_id}");
+                    }
+
+                    // Affectation
+                    $real->no_commande = $ligne->commande_pa;
+                    $real->no_poste = (string) $ligne->poste_client;
+                    $real->save();
+
+                    // Consommation 1 pièce
+                    $ligne->increment('qte_livree', 1);
+
+                    // Optionnel: fermer ligne
+                    
+                    $ligne->refresh();
+                    if ($ligne->qte_livree >= $ligne->qte_commandee) {
+                        $ligne->status = 'closed';
+                        $ligne->save();
+                    }
+                }
+
                 // éviter les doublons
                 $exists = $bl->lignes()
                     ->where('realisation_id', $real->id)
@@ -118,10 +162,11 @@ class BonLivraisonService
                 }
 
                 BonLivraisonLigne::create([
-                    'bon_livraison_id'      => $bl->id,
-                    'realisation_id'        => $real->id,
+                    'bon_livraison_id' => $bl->id,
+                    'realisation_id'   => $real->id,
                 ]);
             }
+
 
             $bl->update(['nb_lines' => $bl->lignes()->count()]);
 

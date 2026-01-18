@@ -1,0 +1,9 @@
+{
+    "fields": {
+        "numero_machine": { "x": 70, "y": 45 },
+        "numero_pa": { "x": 160, "y": 36 },
+        "numero_rotor": { "x": 52, "y": 75 },
+        "numero_stator": { "x": 52, "y": 83 }
+    }
+
+}
