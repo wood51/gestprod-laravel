@@ -15,6 +15,8 @@ class CommandeLigne extends Model
         'code_article',
         'type_sous_ensemble_id',
         'poste_client',
+        'poste_main',
+        'poste_sub',
         'qte_commandee',
         'qte_livree',
         'date_client',
@@ -22,20 +24,23 @@ class CommandeLigne extends Model
         'status'
     ];
 
-    protected $casts= [
+    protected $casts = [
         'date_client' => 'datetime',
-        'date_ajustee' =>'datetime'
+        'date_ajustee' => 'datetime'
     ];
 
-    public function commande() {
+    public function commande()
+    {
         return $this->belongsTo(Commande::class);
     }
 
-    public function article() {
+    public function article()
+    {
         return $this->belongsTo(Article::class);
     }
 
-    public function typeSousEnsemble() {
+    public function typeSousEnsemble()
+    {
         return $this->belongsTo(TypeSousEnsemble::class); // une commande peut référé a un rotor plutôt qu'un alternateur (sous ensemble <> sous ensemble de la ref)
     }
 }

@@ -148,7 +148,7 @@ def explode_quantites(lignes: list[dict]) -> list[dict]:
 
         for i in range(1, qte + 1):
             row2 = row.copy()
-            row2["poste"] = f"{base_poste}-{str(i)}"
+            row2["poste"] = f"{base_poste}.{str(i)}"
             row2["quantite"] = "1"
             out.append(row2)
 

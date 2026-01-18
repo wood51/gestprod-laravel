@@ -78,16 +78,21 @@ class CommandeImportController extends Controller
                         dd([
                             'code_article' => $l['code_article'],
                             'poste' => $l['poste'],
+                            'poste_main' => $main,
+                            'poste_sub' => $sub,
                             'ligne_json' => $l,
-                            'articles_count_same_ref_client' => Article::where('ref_client', $l['code_article'])->count(),
+                            'articles_count_same_ref_client' => Article::where('ref_client', '=', $l['code_article'])->count(),
                         ]);
                     }
                 }
 
 
+                [$main, $sub] = Commande::splitPoste($l['poste']);
                 CommandeLigne::create([
                     'commande_id' => $commande->id,
                     'poste_client' => $l['poste'],
+                    'poste_main' => $main,
+                    'poste_sub' => $sub,
                     'article_id' => $article?->id,
                     'code_article' => $l['code_article'],
                     'date_client' => Carbon::createFromFormat('d/m/Y', $l['date_livraison']),

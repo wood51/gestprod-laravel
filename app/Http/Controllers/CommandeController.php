@@ -25,13 +25,8 @@ class CommandeController extends Controller
     {
         $commande->load([
             'lignes' => function ($q) {
-                $q->orderByRaw("
-                CAST(SUBSTRING_INDEX(poste_client, '.', 1) AS UNSIGNED) ASC,
-                COALESCE(
-                    CAST(NULLIF(SUBSTRING_INDEX(poste_client, '.', -1), poste_client) AS UNSIGNED),
-                    0
-                ) ASC
-            ");
+                $q->orderBy('poste_main')
+                    ->orderBy('poste_sub');
             },
             'lignes.typeSousEnsemble',
         ]);

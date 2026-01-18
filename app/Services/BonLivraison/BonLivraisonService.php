@@ -117,20 +117,15 @@ class BonLivraisonService
                     $ligne = CommandeLigne::query()
                         ->where('article_id', $real->article_id)
                         ->whereColumn('qte_livree', '<', 'qte_commandee')
-                        //->join('commandes', 'commande_lignes.commande_id', '=', 'commandes.id')
+                        ->join('commandes', 'commande_lignes.commande_id', '=', 'commandes.id')
                         ->orderBy('commandes.date_commande', 'asc')
-                        // ->orderBy('commande_lignes.poste_client', 'asc')
-                        ->orderByRaw("
-                CAST(SUBSTRING_INDEX(poste_client, '.', 1) AS UNSIGNED) ASC,
-                COALESCE(
-                    CAST(NULLIF(SUBSTRING_INDEX(poste_client, '.', -1), poste_client) AS UNSIGNED),
-                    0
-                ) ASC
-            ")
+                        ->orderBy('commande_lignes.poste_main', 'asc')
+                        ->orderBy('commande_lignes.poste_sub', 'asc')
                         ->select('commande_lignes.*', 'commandes.pa as commande_pa')
                         ->lockForUpdate()
                         ->first();
-                    
+
+
                     if (!$ligne) {
                         abort(400, "Aucune ligne de commande ouverte pour l’article {$real->article_id}");
                     }
@@ -144,7 +139,7 @@ class BonLivraisonService
                     $ligne->increment('qte_livree', 1);
 
                     // Optionnel: fermer ligne
-                    
+
                     $ligne->refresh();
                     if ($ligne->qte_livree >= $ligne->qte_commandee) {
                         $ligne->status = 'closed';
