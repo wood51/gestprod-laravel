@@ -28,7 +28,7 @@ class BonLivraisonService
         $lines = BonLivraisonLigne::where('bon_livraison_id',  $no_bl)
             ->with([
                 'realisation:id,article_id,numero_meta,no_commande,no_poste',
-                'realisation.article:id,reference,designation',
+                'realisation.article:id,reference,ref_client,designation',
             ])
             ->get();
 
@@ -49,7 +49,7 @@ class BonLivraisonService
 
             foreach ($lignes as $l) {
                 $l->numero_meta = $l->realisation->numero_meta;
-                $l->article_ref = $l->realisation->article->reference;
+                $l->article_ref = $l->realisation->article->ref_client;
                 $l->article_designation = $l->realisation->article->designation;
                 $l->quantite = 1;
                 $l->no_commande = $l->realisation?->no_commande;

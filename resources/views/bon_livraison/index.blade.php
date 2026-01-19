@@ -6,10 +6,10 @@
 
             <div class="flex items-center justify-between">
                 <h2 class="card-title m-2">BON DE LIVRAISON</h2>
-                <!-- <form action="{{ route('bl.create') }}" method="post">
-                    @csrf
-                    <button class="btn btn-sm btn-primary">Ajouter un BL</button>
-                </form> -->
+                {{-- <form action="{{ route('bl.create') }}" method="post">
+                        @csrf
+                        <button class="btn btn-sm btn-primary">Ajouter un BL</button>
+                    </form>  --}}
             </div>
 
             <div class="overflow-y-auto max-h-full">
@@ -22,8 +22,7 @@
                             <th>Création</th>
                             <th>Validation</th>
                             <th>Annulation</th>
-                            <th>Commentaire Int</th>
-                            <th>Commentaire BL</th>
+                            <th>Observation</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -54,10 +53,15 @@
                                         class="font-normal">{{ $r->canceled_at?->translatedFormat(' - d/m/Y à H:i') }}</span>
                                 </td>
                                 <td>
-                                    {{ $r->commentaire_interne }}
-                                </td>
-                                <td>
-                                    {{ $r->commentaire_bl }}
+                                    {{-- {{ $r->commentaire_bl }} --}}
+                                    <form action="{{ route('bl.pdf', $r->id) }}" method="get">
+                                        <button type="submit"
+                                            class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
+                                            title="{{ $r->commentaire_bl }}">
+                                            <i class="fa-regular fa-pen-to-square"></i>
+                                        </button>
+                                    </form>
+
                                 </td>
                                 <td>
                                     <div class="flex justify-center items-center">
@@ -66,8 +70,7 @@
                                         <form action="{{ route('bl.show', $r->id) }}" method="get">
                                             @csrf
                                             <button type="submit"
-                                                class="btn btn-ghost text-sm {{ $r->hasLines() ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
-                                                >
+                                                class="btn btn-ghost text-sm {{ $r->hasLines() ? 'text-primary' : 'text-neutral-content pointer-events-none' }}">
                                                 <i class="fas fa-eye text-sm"></i>
                                             </button>
                                         </form>
@@ -83,8 +86,8 @@
                                             </button>
                                         </form>
 
-                                        {{--Pdf --}}
-                                        <form action="{{ route('bl.pdf', $r->id) }}" method="get">
+                                        {{-- Pdf --}}
+                                        <form action="{{ route('bl.pdf', $r->id) }}" method="get" target="_blank">
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Imprimer">
@@ -92,7 +95,7 @@
                                             </button>
                                         </form>
 
-                                        {{-- Page Garde --}} 
+                                        {{-- Page Garde --}}
                                         <form action="{{ route('garde.pdf', $r->id) }}" method="get">
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->state === 'validated' && $r->typeSousEnsemble->designation === 'Alternateur' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"

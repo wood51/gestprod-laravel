@@ -18,7 +18,7 @@
     <tbody>
         @foreach ($lignes as $i => $ligne)
             <tr @if ($i % 2 == 1) style="background-color:lightgray;" @endif>
-                <td style="width:63mm;"><b>{{ $ligne->article_ref }}</b><br>{{ $ligne->article_designation }}</td>
+                <td style="width:63mm;"><b>{{ $ligne->article_ref }}</b><br><span style="font-size:0.85em">{{ $ligne->article_designation }}</span></td>
                 <td style="width:20.83mm;text-align:center;height:26px;line-height: 26px">{{ $ligne->no_commande }}</td>
                 <td style="width:13.83mm;text-align:center;height:26px;line-height: 26px">{{ $ligne->no_poste }}</td>
                 <td style="width:13.83mm;text-align:center;height:26px;line-height: 26px">1</td>

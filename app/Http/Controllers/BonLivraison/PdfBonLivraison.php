@@ -4,6 +4,7 @@ namespace App\Http\Controllers\BonLivraison;
 
 use App\Services\BonLivraison\BonLivraisonService;
 use App\Models\BonLivraison;
+use App\Models\User;
 use TCPDF;
 
 class PdfBonLivraison
@@ -13,6 +14,8 @@ class PdfBonLivraison
         $bl = BonLivraison::findOrFail($no_bl);
         $date_bl = $bl->validated_at->format("d-m-Y");
         $lignes = $service->read($no_bl);
+        $user = User::find($bl->validated_by);
+        $username = ucfirst($user->prenom)." ".ucfirst($user->nom);
 
         $type=$bl->typeSousEnsemble->designation;
 
@@ -54,7 +57,7 @@ class PdfBonLivraison
         $pdf->writeHTML($observation, true, false, true, false);
         // $pdf->ln(2);
 
-        $signature = view('bon_livraison.partials.pdfSignature', compact('lignes', 'bl'))->render();
+        $signature = view('bon_livraison.partials.pdfSignature', compact('lignes', 'bl','username'))->render();
         $pdf->writeHTML($signature, true, false, true, false);
 
         // Annulé

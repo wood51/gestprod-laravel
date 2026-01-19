@@ -36,7 +36,7 @@ class BonLivraisonLigne extends Model
     protected function articleRef(): Attribute
     {
         return Attribute::make(
-            get: fn($value): string => (string)  ($this->realisation?->article->reference ?? $value)
+            get: fn($value): string => (string)  ($this->realisation?->article->ref_client ?? $value)
         );
     }
 
