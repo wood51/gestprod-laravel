@@ -144,7 +144,7 @@
                                             'flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200',
                                             'bg-base-100 text-primary font-semibold' => $isActive,
                                             'hover:bg-base-100 hover:text-primary/90' => !$isActive,
-                                        ])>
+                                        ]) target="{{ $item['target'] ?? '' }}">
                                             @if (!empty($item['icon']))
                                                 <i class="{{ $item['icon'] }} text-sm"></i>
                                             @endif

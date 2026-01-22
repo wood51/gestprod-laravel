@@ -40,6 +40,13 @@ class BonLivraisonLigne extends Model
         );
     }
 
+    protected function articleInterne(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value): string => (string)  ($this->realisation?->article->reference ?? $value)
+        );
+    }
+
     protected function articleDesignation(): Attribute
     {
         return Attribute::make(

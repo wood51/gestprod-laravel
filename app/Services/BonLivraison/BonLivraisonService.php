@@ -111,19 +111,21 @@ class BonLivraisonService
             foreach ($reals as $real) {
 
                 // 0) Si pas encore affecté à une commande/poste → FIFO
-                /** @var \App\Models\CommandeLigne|null $ligne */
+                // /** @var \App\Models\CommandeLigne|null $ligne */
                 if (empty($real->no_commande) || empty($real->no_poste)) {
+
 
                     $ligne = CommandeLigne::query()
                         ->where('article_id', $real->article_id)
                         ->whereColumn('qte_livree', '<', 'qte_commandee')
                         ->join('commandes', 'commande_lignes.commande_id', '=', 'commandes.id')
-                        ->orderBy('commandes.date_commande', 'asc')
+                        ->select('commande_lignes.*', 'commandes.pa as commande_pa')
+                        ->orderByRaw("CAST(SUBSTRING(commandes.pa, 3) AS UNSIGNED) ASC") // tri sur le numéro après 'PA'
                         ->orderBy('commande_lignes.poste_main', 'asc')
                         ->orderBy('commande_lignes.poste_sub', 'asc')
-                        ->select('commande_lignes.*', 'commandes.pa as commande_pa')
                         ->lockForUpdate()
                         ->first();
+
 
 
                     if (!$ligne) {
@@ -137,14 +139,16 @@ class BonLivraisonService
 
                     // Consommation 1 pièce
                     $ligne->increment('qte_livree', 1);
-
-                    // Optionnel: fermer ligne
-
+                    // Fermeture Ligne de commande si besoin
                     $ligne->refresh();
                     if ($ligne->qte_livree >= $ligne->qte_commandee) {
                         $ligne->status = 'closed';
                         $ligne->save();
                     }
+
+                    
+
+
                 }
 
                 // éviter les doublons

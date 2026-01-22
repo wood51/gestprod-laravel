@@ -29,7 +29,7 @@ class PageGarde extends Controller
 
         foreach ($modeles as $modele) {
 
-            $template = "PG_$modele->article_ref";
+            $template = "PG_$modele->article_interne";
             $basePath = "pdf_templates/page_garde";
 
             $jsonPath = resource_path("$basePath/$template.json");

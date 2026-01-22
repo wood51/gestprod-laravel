@@ -24,6 +24,7 @@ class PdfBonLivraison
         $pdf->setPrintFooter(true);
         $pdf->SetAuthor('GESTPROD DEE');              // optionnel
         $pdf->SetTitle("BL {$no_bl}");          // optionnel
+        $pdf->SetAutoPageBreak(true, margin: 24);
         $pdf->SetMargins(10, 10, 10);           // optionnel
 
         $pdf->AddPage();                        // <— important
@@ -47,7 +48,7 @@ class PdfBonLivraison
 
         $transport = view('bon_livraison.partials.pdfTransport')->render();
         $pdf->writeHTML($transport, true, false, true, false);
-        $pdf->ln(0);
+       
 
         $table = view('bon_livraison.partials.pdf'.$type.'Table', compact('lignes', 'bl'))->render();
         $pdf->writeHTML($table, true, false, true, false);
