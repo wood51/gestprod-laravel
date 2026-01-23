@@ -13,7 +13,7 @@
             </div>
             <div class="card card-dash w-full bg-base-100 border-primary text-neutral-content ">
                 <div class="card-body items-start text-center">
-                    <form id="bl-form" method="POST" action="{{ route('realisations.addToBl') }}">
+                    <form id="bl-form" method="POST" action="{{ route('realisations.createBl') }}">
                         @csrf
                         <button class="btn btn-primary" id="btnAddBl">Ajouter au BL</button>
                     </form>

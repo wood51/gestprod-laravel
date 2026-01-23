@@ -17,26 +17,33 @@ class BonLivraisons extends Controller
         return view('bon_livraison.index', compact('rows'));
     }
 
-   
-
-    public function addRealisationsToBl(Request $request, BonLivraisonService $service)
+    public function createBl(Request $request, BonLivraisonService $blSvc)
     {
+        $data = $request->validate([
+            'realisationIds'   => ['required', 'array', 'min:1'],
+            'realisationIds.*' => ['integer', 'exists:realisations,id'],
+        ]);
+
+        $bl = $blSvc->create($data['realisationIds']);
         
+        return redirect()
+           ->route('bl.show', $bl->id)
+           ->with('success', 'Bon de livraison créé.');
     }
 
 
-    public function showBlNumber(int $no_bl, BonLivraisonService $service)
+    public function showBl(int $no_bl, BonLivraisonService $blSvc)
     {
-
+        dd("show bl no");
     }
 
-    public function deleteBl(int $no_bl, BonLivraisonService $service)
+    public function deleteBl(int $no_bl, BonLivraisonService $blSvc)
     {
-
+        dd("delete bl no ");
     }
 
-    public function validateBl($no_bl, BonLivraisonService $service)
+    public function validateBl($no_bl, BonLivraisonService $blSvc)
     {
-
+        dd("validate bl no ");
     }
 }
