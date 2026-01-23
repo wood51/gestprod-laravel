@@ -1,0 +1,204 @@
+<?php
+
+namespace App\Services\BonLivraison;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\BonLivraison;
+use App\Models\BonLivraisonLigne;
+use App\Models\Realisation;
+use App\Models\Commande;
+use App\Models\CommandeLigne;
+
+
+class BonLivraisonService
+{
+
+    // CRUD
+    public function create()
+    {
+        BonLivraison::create([
+            'state' => 'draft',
+            'created_by' => Auth::id(),
+        ]);
+    }
+
+    public function read($no_bl)
+    {
+        $lines = BonLivraisonLigne::where('bon_livraison_id', '=', $no_bl)
+            ->with([
+                'realisation:id,article_id,numero_meta,no_commande,no_poste',
+                'realisation.article:id,reference,ref_client,designation'
+            ])->get();
+
+        return $lines;
+    }
+
+    public function update($no_bl)
+    {
+        // Recherche le BL par no
+        $bl = BonLivraison::findOrFail($no_bl);
+
+        // lecture des lignes bl  associé
+        $lignes = $this->read($no_bl);
+
+
+        DB::transaction(function () use ($bl, $lignes) {
+
+            // Maj etat Bl
+            $bl->state = 'validated';
+            $bl->validated_by = Auth::id();
+            $bl->validated_at = now();
+            $bl->save();
+
+            // Maj des ligne BL
+            foreach ($lignes as $l) {
+                $l->numero_meta = $l->realisation->numero_meta;
+                $l->article_ref = $l->realisation->article->ref_client;
+                $l->article_designation = $l->realisation->article->designation;
+                $l->quantite = 1;
+                $l->no_commande = $l->realisation?->no_commande;
+                $l->no_poste = $l->realisation?->no_poste;
+                $l->save();
+            }
+        });
+        return;
+    }
+
+    public function delete($no_bl)
+    {
+
+        return DB::transaction(function () use ($no_bl) {
+
+            $bl = BonLivraison::findOrFail($no_bl);
+            $lines = $this->read($no_bl);
+
+            // TODO Effacer les référence dans réalisation et remettre en place les commande prise
+            //dd($lignes);
+
+            if ($lines) {
+
+
+                // foreach($lignes as $ligne) {
+                //     $ligne->realisation->no_commande=null;
+                //     $ligne->realisation->no_poste=null;
+                //     $ligne->update();
+                // }
+                foreach ($lines as $line) {
+                    $pa = $line->no_commande;
+                    $cde = Commande::with('lignes:id,status')
+                        ->where('pa', '=', $pa)
+                        ->first();
+                    dd($cde);
+                }
+                dd();
+
+                // if ($bl->state === 'draft') {
+                //     $bl->delete();
+                // } else {
+                //     $bl->state = 'canceled';
+                //     $bl->canceled_by = Auth::id();
+                //     $bl->canceled_at = now();
+                //     $bl->update();
+                // }
+            }
+        });
+    }
+
+    public function addRealisationsToBlForType(array $realisationIds): BonLivraison
+    {
+        return DB::transaction(function () use ($realisationIds) {
+
+            $reals = Realisation::with('article')
+                ->whereIn('id', $realisationIds)
+                ->get();
+
+            if ($reals->isEmpty()) {
+                abort(400, 'Aucune réalisation trouvée.');
+            }
+
+            // on vérifie qu’il n’y a qu’un seul type_sous_ensemble
+            $types = $reals->pluck('type_sous_ensemble_id')->unique();
+            if ($types->count() > 1) {
+                // TODO message flash
+                abort(400, 'Les réalisations sélectionnées doivent être du même type.');
+            }
+            $typeId = $types->first();
+
+            // 1 seul BL draft par type_sous_ensemble
+            $bl = BonLivraison::where('state', '=', 'draft')
+                ->where('type_sous_ensemble_id', $typeId)
+                ->first();
+
+            if (! $bl) {
+                $bl = BonLivraison::create([
+                    'type_sous_ensemble_id' => $typeId,
+                    'state'                 => 'draft',
+                    'created_by'            => Auth::id(),
+                ]);
+            }
+
+            foreach ($reals as $real) {
+
+                // Si pas encore affecté à une commande/poste -> FIFO
+                // FIXME Voir dans le fifo avec la date demander et date ajustée (comparer les dates)
+                if (empty($real->no_commande) || empty($real->no_poste)) {
+
+                    // recherche d'une ligne de commande correspondante 
+                    $ligne = CommandeLigne::query()
+                        ->where('article_id', $real->article_id)
+                        ->whereColumn('qte_livree', '<', 'qte_commandee')
+                        ->join('commandes', 'commande_lignes.commande_id', '=', 'commandes.id')
+                        ->select('commande_lignes.*', 'commandes.pa as commande_pa')
+                        ->orderByRaw("CAST(SUBSTRING(commandes.pa, 3) AS UNSIGNED) ASC") // tri sur le numéro après 'PA'
+                        ->orderBy('commande_lignes.poste_main', 'asc')
+                        ->orderBy('commande_lignes.poste_sub', 'asc')
+                        ->lockForUpdate()
+                        ->first();
+
+
+
+                    if (!$ligne) {
+                        // TODO Flash message
+                        abort(400, "Aucune ligne de commande ouverte pour l’article {$real->article_id}");
+                    }
+
+                    // Affectation dans réalisations
+                    $real->no_commande = $ligne->commande_pa;
+                    $real->no_poste = (string) $ligne->poste_client;
+                    $real->save();
+
+                    // Consommation 1 pièce dans les lignes de commandes
+                    $ligne->increment('qte_livree', 1);
+
+                    // Fermeture Ligne de commande si besoin
+                    $ligne->refresh();
+                    if ($ligne->qte_livree >= $ligne->qte_commandee) {
+                        $ligne->status = 'closed';
+                        $ligne->save();
+                    }
+
+                    // *************
+                    // TODO Fermeture de la commande si besoin
+                    // *************
+                }
+
+                // éviter les doublons dans la ligne BL  
+                if ($bl->lignes()->where('realisation_id', $real->id)->exists()) {
+                    continue;
+                }
+
+                // Créer la ligne de BL 
+                BonLivraisonLigne::create([
+                    'bon_livraison_id' => $bl->id,
+                    'realisation_id'   => $real->id,
+                ]);
+            }
+
+
+            $bl->update(['nb_lines' => $bl->lignes()->count()]); // TODO avoir si ce n'est pas obsolète 
+
+            return $bl;
+        });
+    }
+}

@@ -51,15 +51,15 @@ Route::middleware('auth')->group(function () {
     // Planning
     Route::get('/realisation', [RealisationController::class, 'index'])->name('realisation.index');
     Route::get('/realisation/rows', [RealisationController::class, 'rows'])->name('realisation.rows');
-    Route::post('/realisations/add-to-bl', [BonLivraisons::class, 'addRealisationsToBl'])
-        ->name('realisations.addToBl');
+    Route::post('/realisations/add-to-bl', [BonLivraisons::class, 'createBl'])
+        ->name('realisations.createBl');
 
-    // Bon de livraisons
+    // // Bon de livraisons
     route::get('bl', [BonLivraisons::class, 'index'])->name('bl.index');
-    route::post('bl/new', [BonLivraisons::class, 'newBl'])->name('bl.create');
-    route::get('bl/{no_bl}', [BonLivraisons::class, 'showBlNumber'])->name('bl.show');
-    route::patch('/bl/validate/{no_bl}', [BonLivraisons::class, 'validateBl'])->name('bl.validate');
-    route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
+    // route::post('bl/new', [BonLivraisons::class, 'newBl'])->name('bl.create');
+    // route::get('bl/{no_bl}', [BonLivraisons::class, 'showBlNumber'])->name('bl.show');
+    // route::patch('/bl/validate/{no_bl}', [BonLivraisons::class, 'validateBl'])->name('bl.validate');
+    // route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
 
     // Test design
     route::get('/garde/{no_bl}', [PageGarde::class, 'generatePageGarde'])->name('garde.pdf');

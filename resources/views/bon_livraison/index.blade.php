@@ -68,7 +68,6 @@
 
                                         {{-- Visualisation --}}
                                         <form action="{{ route('bl.show', $r->id) }}" method="get">
-                                            @csrf
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->hasLines() ? 'text-primary' : 'text-neutral-content pointer-events-none' }}">
                                                 <i class="fas fa-eye text-sm"></i>
@@ -89,7 +88,7 @@
                                         {{-- Pdf --}}
                                         <form action="{{ route('bl.pdf', $r->id) }}" method="get" target="_blank">
                                             <button type="submit"
-                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
+                                                class="btn btn-ghost text-sm {{ $r->state === 'validated' || $r->state === 'canceled' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Imprimer">
                                                 <i class="fa-solid fa-print"></i>
                                             </button>

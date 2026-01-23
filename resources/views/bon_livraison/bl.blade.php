@@ -49,6 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {{-- {{ dd($lignes) }} --}}
                         @foreach ($lignes as $ligne)
                             <tr>
                                 <td>{{ $ligne->article_ref }}</td>

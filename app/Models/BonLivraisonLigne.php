@@ -24,13 +24,33 @@ class BonLivraisonLigne extends Model
         return $this->belongsTo(Realisation::class);
     }
 
+
+    public function bonLivraison()
+    {
+        return $this->belongsTo(\App\Models\BonLivraison::class);
+    }
+
     // Accessors
+
     protected function numeroMeta(): Attribute
     {
         return Attribute::make(
-            get: fn($value): array => (array) (json_decode($this->realisation?->numero_meta, true) ?? json_decode($value, true) ?? [])
+            get: function ($value): array {
+                // Valeur directe du modèle
+                $decoded = json_decode($value, true);
+
+                if (is_array($decoded)) {
+                    return $decoded;
+                }
+
+                // Fallback sur la relation
+                $relationValue = json_decode($this->realisation?->numero_meta ?? '[]', true);
+
+                return is_array($relationValue) ? $relationValue : [];
+            }
         );
     }
+
 
 
     protected function articleRef(): Attribute
