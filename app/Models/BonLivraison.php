@@ -19,6 +19,7 @@ class BonLivraison extends Model
         'nb_lines',
         'commentaire_interne',
         'commentaire_bl',
+        'no_bl'
     ];
     protected $with = [
         'createdBy:id,nom,prenom,username',

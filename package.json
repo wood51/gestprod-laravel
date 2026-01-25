@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev:all": "concurrently \"php artisan serve --host=0.0.0.0\" \"npm run dev -- --host\"",
+        "dev:all": "concurrently \"php artisan serve --host=0.0.0.0 --no-reload\" \"npm run dev -- --host\"",
         "build": "vite build",
         "dev": "vite -- --host"
     },

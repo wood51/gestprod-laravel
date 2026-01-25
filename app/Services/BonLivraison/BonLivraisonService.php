@@ -2,31 +2,100 @@
 
 namespace App\Services\BonLivraison;
 
+use \Illuminate\Support\Facades\Auth;
+use \Illuminate\Support\Facades\DB;
+
+use App\Models\BonLivraison;
+use App\Models\BonLivraisonLigne;
 use App\Models\Realisation;
 
 class BonLivraisonService
 {
 
-    // CRUD
-    public function create($realisationIds) {
+    public function create($realisationIds)
+    {
         // Récupérations des lignes slectionnés
-        $realisations = Realisation::with('article')->whereIn('id',$realisationIds);
+        $realisations = Realisation::whereIn('id', $realisationIds)->get(); // FIXME Pourquoi les article s?
+        // $realisations = Realisation::with('article')->whereIn('id',$realisationIds)->get(); // FIXME Pourquoi les article s?
+
         // Gestion erreur
-        
-        // Vérification que les produit sont du m^me sous ensemble 
-        $types = $realisations->pluck('type_sous_ensemble_id')->unique()->count();
-        if ($types > 1 ) {
-            throw new \ErrorException("Les produit doivent être du même type");
-        }
-        
-        dd($types);
-        return (object) ['bl'=>999];
+        if ($realisations->count() < 1) throw new \ErrorException("Aucune réalisations trouvé");
+
+        // Vérification que les produit sont du même sous ensemble 
+        $type = $realisations->pluck('type_sous_ensemble_id')->unique();
+        if ($type->count() > 1) throw new \ErrorException("Les produit doivent être du même type");
+
+        // Rechercher si un bl de ce type_sous_ensemble existe en brouillon 
+        $bl = BonLivraison::where('type_sous_ensemble_id', "=", $type, 'and')
+            ->where('state', '=', 'draft')
+            ->get();
+
+        $bl_id = $bl->isEmpty()
+            ? $this->createBl($type->first(), $realisations)
+            : $this->appendToBl($bl->first(), $realisations);
+
+
+
+        return $bl_id;
     }
 
-    public function read($no_bl) {}
+    public function read($no_bl)
+    {
+        $lines = BonLivraisonLigne::where('bon_livraison_id', '=', $no_bl)
+            ->with([
+                'realisation:id,article_id,numero_meta,no_commande,no_poste',
+                'realisation.article:id,reference,ref_client,designation'
+            ])->get();
 
-    public function update($no_bl) {}
+        return $lines;
+    }
 
-    public function delete($no_bl) {}
+    public function update($no_bl) {
 
+    }
+
+    public function delete($no_bl)
+    {
+        dd("delete bl n° $no_bl");
+        return;
+    }
+
+    private function createBl($type, $realisations)
+    {
+        $bl_id = DB::transaction(function () use ($type, $realisations) {
+            $bl = BonLivraison::create([
+                'type_sous_ensemble_id' => $type,
+                'state' => 'draft',
+                'created_by' => Auth::user()->id,
+                'no_bl'=> BonLivraison::whereNotNull('no_bl')->max('no_bl') + 1 
+            ]);
+
+            foreach ($realisations as $realisation) {
+                $this->appendLine($bl->id, $realisation);
+            }
+
+            return $bl->id;
+        });
+        return $bl_id;
+    }
+
+    private function appendToBl($bl, $realisations)
+    {
+        DB::transaction(function () use ($bl, $realisations) {
+
+            foreach ($realisations as $realisation) {
+                $this->appendLine($bl->id, $realisation);
+            }
+        });
+        return $bl->id;
+    }
+
+    private function appendLine($bl_id, $realisation)
+    {
+
+        BonLivraisonLigne::create([
+            'bon_livraison_id' => $bl_id,
+            'realisation_id' => $realisation->id
+        ]);
+    }
 }

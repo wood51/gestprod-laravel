@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     // // Bon de livraisons
     route::get('bl', [BonLivraisons::class, 'index'])->name('bl.index');
     route::post('bl/new', [BonLivraisons::class, 'newBl'])->name('bl.create');
-    route::get('bl/{no_bl}', [BonLivraisons::class, 'showBlNumber'])->name('bl.show');
+    route::get('bl/{no_bl}', [BonLivraisons::class, 'showBl'])->name('bl.show');
     route::patch('/bl/validate/{no_bl}', [BonLivraisons::class, 'validateBl'])->name('bl.validate');
     route::delete('/bl/delete/{no_bl}', [BonLivraisons::class, 'deleteBl'])->name('bl.delete');
 

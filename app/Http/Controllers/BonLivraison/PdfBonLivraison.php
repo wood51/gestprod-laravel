@@ -13,7 +13,7 @@ class PdfBonLivraison
     {
         $bl = BonLivraison::findOrFail($no_bl);
         $date_bl = $bl->validated_at->format("d-m-Y");
-        $lignes = $service->read($no_bl);
+        $lignes = $service->read($no_bl); // FIXME 
         $user = User::find($bl->validated_by);
         $username = ucfirst($user->prenom) . " " . ucfirst($user->nom);
 

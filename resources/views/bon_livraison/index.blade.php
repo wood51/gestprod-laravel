@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach ($rows as $r)
                             <tr class="hover:bg-gray-100">
-                                <td>{{ $r->id }}</td>
+                                <td>{{ $r->no_bl }}</td>
                                 <td>
                                     @if ($r->state === 'validated')
                                         <div class="badge badge-outline badge-success text-sm">validé</div>
