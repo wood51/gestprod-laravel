@@ -86,4 +86,6 @@ class BonLivraisonLigne extends Model
             get: fn($value): string => (string) ($this->realisation?->no_poste ?? $value)
         );
     }
+
+    
 }

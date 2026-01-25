@@ -41,7 +41,9 @@ class BonLivraisonService
 
     public function read($no_bl)
     {
-        $lines = BonLivraisonLigne::where('bon_livraison_id', '=', $no_bl)
+
+        $bl_id = $this->getBlId($no_bl);
+        $lines = BonLivraisonLigne::where('bon_livraison_id', '=', $bl_id)
             ->with([
                 'realisation:id,article_id,numero_meta,no_commande,no_poste',
                 'realisation.article:id,reference,ref_client,designation'
@@ -50,12 +52,15 @@ class BonLivraisonService
         return $lines;
     }
 
-    public function update($no_bl) {
-
+    public function update($no_bl)
+    {
+        $bl_id = $this->getBlId($no_bl);
+        dd("update");
     }
 
     public function delete($no_bl)
     {
+        $bl_id = $this->getBlId($no_bl);
         dd("delete bl n° $no_bl");
         return;
     }
@@ -67,7 +72,7 @@ class BonLivraisonService
                 'type_sous_ensemble_id' => $type,
                 'state' => 'draft',
                 'created_by' => Auth::user()->id,
-                'no_bl'=> BonLivraison::whereNotNull('no_bl')->max('no_bl') + 1 
+                'no_bl' => BonLivraison::whereNotNull('no_bl')->max('no_bl') + 1
             ]);
 
             foreach ($realisations as $realisation) {
@@ -97,5 +102,17 @@ class BonLivraisonService
             'bon_livraison_id' => $bl_id,
             'realisation_id' => $realisation->id
         ]);
+    }
+
+
+    private function getBlId(string|int $no_bl): int
+    {
+        $id = BonLivraison::where('no_bl', $no_bl)->value('id');
+
+        if (!$id) {
+            throw new \Illuminate\Database\Eloquent\ModelNotFoundException("BL {$no_bl} introuvable");
+        }
+
+        return (int) $id;
     }
 }
