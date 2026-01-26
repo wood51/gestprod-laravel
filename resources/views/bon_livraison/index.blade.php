@@ -67,7 +67,7 @@
                                     <div class="flex justify-center items-center">
 
                                         {{-- Visualisation --}}
-                                        <form action="{{ route('bl.show', $r->id) }}" method="get">
+                                        <form action="{{ route('bl.show', $r->no_bl) }}" method="get">
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->hasLines() ? 'text-primary' : 'text-neutral-content pointer-events-none' }}">
                                                 <i class="fas fa-eye text-sm"></i>
@@ -75,7 +75,7 @@
                                         </form>
 
                                         {{-- Suppression --}}
-                                        <form action="{{ route('bl.delete', $r->id) }}" method="post">
+                                        <form action="{{ route('bl.delete', $r->no_bl) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -86,7 +86,7 @@
                                         </form>
 
                                         {{-- Pdf --}}
-                                        <form action="{{ route('bl.pdf', $r->id) }}" method="get" target="_blank">
+                                        <form action="{{ route('bl.pdf', $r->no_bl) }}" method="get" target="_blank">
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->state === 'validated' || $r->state === 'canceled' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Imprimer">
@@ -95,7 +95,7 @@
                                         </form>
 
                                         {{-- Page Garde --}}
-                                        <form action="{{ route('garde.pdf', $r->id) }}" method="get">
+                                        <form action="{{ route('garde.pdf', $r->no_bl) }}" method="get">
                                             <button type="submit"
                                                 class="btn btn-ghost text-sm {{ $r->state === 'validated' && $r->typeSousEnsemble->designation === 'Alternateur' ? 'text-primary' : 'text-neutral-content pointer-events-none' }}"
                                                 title="Page garde">

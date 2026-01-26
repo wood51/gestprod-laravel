@@ -21,12 +21,11 @@ class BonLivraisons extends Controller
     {
         try {
             $data = $request->validate([
-                'realisationIds'   => ['required', 'array', 'min:1'],
+                'realisationIds'   => ['requiresd', 'array', 'min:1'],
                 'realisationIds.*' => ['integer', 'exists:realisations,id'],
             ]);
 
             $bl = $blSvc->create($data['realisationIds']);
-
             return redirect()
                 ->route('bl.show', $bl)
                 ->with('success', 'Bon de livraison créé.');
@@ -38,8 +37,7 @@ class BonLivraisons extends Controller
 
     public function showBl(int $no_bl, BonLivraisonService $blSvc)
     {
-        $bl = BonLivraison::find($no_bl);
-
+        $bl = BonLivraison::where('no_bl','=',$no_bl)->first();
         $lignes = $blSvc->read($no_bl);
         return view('bon_livraison.bl', compact('lignes', 'bl'));
     }

@@ -67,7 +67,7 @@ class BonLivraisonService
 
     private function createBl($type, $realisations)
     {
-        $bl_id = DB::transaction(function () use ($type, $realisations) {
+        $bl = DB::transaction(function () use ($type, $realisations) {
             $bl = BonLivraison::create([
                 'type_sous_ensemble_id' => $type,
                 'state' => 'draft',
@@ -79,9 +79,9 @@ class BonLivraisonService
                 $this->appendLine($bl->id, $realisation);
             }
 
-            return $bl->id;
+            return $bl;
         });
-        return $bl_id;
+        return $bl;
     }
 
     private function appendToBl($bl, $realisations)

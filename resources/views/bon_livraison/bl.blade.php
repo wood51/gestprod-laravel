@@ -8,7 +8,7 @@
                     <h2 class="card-title m-2">
                         <a href="/bl"><i class="fa-solid fa-share fa-flip-horizontal"></i></a>
 
-                        Bon de livraison N° {{ $bl->id }}
+                        Bon de livraison N° {{ $bl->no_bl }}
                         @if ($bl->state === 'validated')
                             <div class="badge badge-outline badge-success text-sm">validé </div>
                         @elseif($bl->state === 'draft')
