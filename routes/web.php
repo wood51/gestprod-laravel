@@ -14,6 +14,7 @@ use App\Http\Controllers\PageGarde;
 use App\Http\Controllers\Realisation\RealisationController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\CommandeImportController;
+use App\Http\Controllers\Kpi\KpiSecuEnv;
 use App\Http\Controllers\PdpController;
 use App\Models\BonLivraison;
 
@@ -40,6 +41,8 @@ Route::get('kpi/qualite/{week}', [Qualite::class, 'renderQualite']);
 
 Route::get('kpi/api/qualite-mois/{week}/{nb_week}', [Qualite::class, 'jsonQualiteMois']);
 Route::get('kpi/qualite-mois/{week}/{nb_week}', [Qualite::class, 'renderQualiteMois']);
+
+Route::get('/kpi/secu-env',[KpiSecuEnv::class,'index']);
 
 
 Route::get('/pa/import', [CommandeImportController::class, 'create']);

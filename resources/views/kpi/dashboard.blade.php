@@ -77,6 +77,10 @@
             <div id="slide3" class="carousel-item relative w-full h-full">
                 @include('kpi.partials.performance-qualite')
             </div>
+            <!-- Slide 4 -->
+            <div id="slide4" class="carousel-item relative w-full h-full">
+                @include('kpi.partials.secu-env')
+            </div>
         </div>
     </main>
 
@@ -147,8 +151,8 @@
             }
 
             // Initialisation
-            showSlide(0);
-            startTimer();
+            showSlide(3);
+            //startTimer();
 
             document.addEventListener("keydown", (e) => {
                 // Espace : change de slide sans toucher au mode pause
