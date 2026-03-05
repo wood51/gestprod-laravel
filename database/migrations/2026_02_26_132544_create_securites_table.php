@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('securites', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('sst_id')->constrained('users');
+            $table->foreignId('operation_id')->constrained('operations');
+            $table->string('description');
             $table->timestamps();
         });
     }

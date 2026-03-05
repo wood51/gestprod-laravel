@@ -149,8 +149,8 @@
                     indicator.classList.add("invisible");
                 }, 2000);
             }
-
-            // Initialisation
+            //TODO EN debug remettre le temps en route 
+            // Initialisation 
             showSlide(3);
             //startTimer();
 

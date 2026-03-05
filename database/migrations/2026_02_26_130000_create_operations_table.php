@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('environements', function (Blueprint $table) {
+        Schema::create('operations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('operation_id')->constrained('operations');
-            $table->string('description');
-            $table->timestamps();
+            $table->string('desxcription');
         });
     }
 
@@ -25,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('environements');
+        Schema::dropIfExists('operations');
     }
 };
